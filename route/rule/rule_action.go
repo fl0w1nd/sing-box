@@ -81,8 +81,10 @@ func NewRuleAction(logger logger.ContextLogger, action option.RuleAction) (adapt
 		return &RuleActionHijackDNS{}, nil
 	case C.RuleActionTypeSniff:
 		sniffAction := &RuleActionSniff{
-			SnifferNames: action.SniffOptions.Sniffer,
-			Timeout:      time.Duration(action.SniffOptions.Timeout),
+			SnifferNames:     action.SniffOptions.Sniffer,
+			Timeout:          time.Duration(action.SniffOptions.Timeout),
+			OverrideOutbound: action.SniffOptions.OverrideDestination,
+			OverrideDirect:   action.SniffOptions.OverrideDirect,
 		}
 		return sniffAction, sniffAction.build()
 	case C.RuleActionTypeResolve:
@@ -477,6 +479,9 @@ type RuleActionSniff struct {
 	Timeout        time.Duration
 	// Deprecated
 	OverrideDestination bool
+
+	OverrideOutbound bool // dial proxy outbounds with the sniffed domain
+	OverrideDirect   bool // and direct, with OverrideOutbound
 }
 
 func (r *RuleActionSniff) Type() string {

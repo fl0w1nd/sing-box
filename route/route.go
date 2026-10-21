@@ -160,6 +160,7 @@ func (r *Router) routeConnection(ctx context.Context, conn net.Conn, metadata ad
 	}
 	metadata.RouteOutbound = selectedOutbound.Tag()
 	metadata.OutboundChain = chain
+	r.overrideOutboundDestination(ctx, &metadata, chain[len(chain)-1])
 	for _, tracker := range r.trackers {
 		conn = tracker.RoutedConnection(ctx, conn, metadata, selectedRule, selectedOutbound)
 	}
@@ -326,6 +327,7 @@ func (r *Router) routePacketConnection(ctx context.Context, conn N.PacketConn, m
 	}
 	metadata.RouteOutbound = selectedOutbound.Tag()
 	metadata.OutboundChain = chain
+	r.overrideOutboundDestination(ctx, &metadata, chain[len(chain)-1])
 	for _, tracker := range r.trackers {
 		conn = tracker.RoutedPacketConnection(ctx, conn, metadata, selectedRule, selectedOutbound)
 	}
@@ -696,6 +698,7 @@ match:
 		switch action := currentRule.Action().(type) {
 		case *R.RuleActionSniff:
 			newBuffer, newPacketBuffers, newErr := r.actionSniff(ctx, metadata, action, inputConn, inputPacketConn, buffers, packetBuffers)
+			markSniffOverride(metadata, action)
 			if newBuffer != nil {
 				buffers = append(buffers, newBuffer)
 			} else if len(newPacketBuffers) > 0 {

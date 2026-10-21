@@ -76,6 +76,8 @@ type InboundContext struct {
 	LastInbound               string
 	OriginDestination         M.Socksaddr
 	RouteOriginalDestination  M.Socksaddr
+	SniffOverrideDestination  bool
+	SniffOverrideDirect       bool
 	UDPDisableDomainUnmapping bool
 	UDPConnect                bool
 	UDPTimeout                time.Duration
