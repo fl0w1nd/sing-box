@@ -1,0 +1,268 @@
+name: Fork
+
+on:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+    # Pushing a tag like v1.15.0-alpha.12-extended.1 builds and publishes that release.
+    tags:
+      - "v*-extended.*"
+  pull_request:
+    branches:
+      - dev
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Calculate version
+    runs-on: ubuntu-latest
+    outputs:
+      base: ${{ steps.version.outputs.base }}
+      version: ${{ steps.version.outputs.version }}
+      release: ${{ steps.version.outputs.release }}
+      go: ${{ steps.go.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Calculate version
+        id: version
+        run: |
+          set -euo pipefail
+          # The base is the upstream tag the fork commits sit on; earlier fork tags are skipped.
+          base=$(git describe --tags --abbrev=0 --exclude 'v*-extended.*')
+          release=false
+          version=""
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            tag=${GITHUB_REF#refs/tags/}
+            n=${tag#"${base}-extended."}
+            if [[ "$tag" != "${base}-extended.$n" || ! "$n" =~ ^[1-9][0-9]*$ ]]; then
+              echo "tag $tag does not match ${base}-extended.<N>" >&2
+              exit 1
+            fi
+            release=true
+            version=${tag#v}
+          fi
+          {
+            echo "base=$base"
+            echo "version=$version"
+            echo "release=$release"
+          } | tee -a "$GITHUB_OUTPUT"
+      - name: Read Go version
+        id: go
+        run: |
+          set -euo pipefail
+          # Build with the Go release upstream ships its binaries with.
+          version=$(sed -n 's/^ *go-version: *\([0-9][0-9.]*\) *$/\1/p' .github/workflows/build.yml | head -n1)
+          [[ -n "$version" ]] || { echo "no go-version in build.yml" >&2; exit 1; }
+          echo "version=$version" | tee -a "$GITHUB_OUTPUT"
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.prepare.outputs.go }}
+      - name: Test fork packages
+        run: |
+          set -euo pipefail
+          go test -count=1 -tags "$(cat release/DEFAULT_BUILD_TAGS_OTHERS)" -ldflags "$(cat release/LDFLAGS)" \
+            ./provider/... ./protocol/group/ ./protocol/tailscale/ ./common/urltest/ ./route/ ./daemon/ \
+            ./adapter/... ./option/ ./experimental/cachefile/ ./experimental/clashapi/
+      - name: Check docs/schema.json
+        run: |
+          set -euo pipefail
+          go run -tags "$(cat release/DEFAULT_BUILD_TAGS_OTHERS)" -ldflags "$(cat release/LDFLAGS)" ./cmd/sing-box schema -o docs/schema.json
+          git diff --exit-code -- docs/schema.json
+      - name: Check upstream API
+        run: |
+          # The GUI only relies on upstream StartedService; fork features go through ExtendedService.
+          git diff --exit-code "${{ needs.prepare.outputs.base }}" -- 'daemon/started_service*'
+      - name: Check ExtendedService generated code
+        run: |
+          set -euo pipefail
+          curl -fsSL -o "$RUNNER_TEMP/protoc.zip" https://github.com/protocolbuffers/protobuf/releases/download/v35.1/protoc-35.1-linux-x86_64.zip
+          unzip -q "$RUNNER_TEMP/protoc.zip" -d "$RUNNER_TEMP/protoc"
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.2
+          go install mvdan.cc/gofumpt@v0.10.0
+          bin=$(go env GOPATH)/bin
+          "$RUNNER_TEMP/protoc/bin/protoc" -I . \
+            --go_out . --go_opt paths=source_relative \
+            --go-grpc_out . --go-grpc_opt paths=source_relative \
+            --plugin protoc-gen-go="$bin/protoc-gen-go" --plugin protoc-gen-go-grpc="$bin/protoc-gen-go-grpc" \
+            daemon/extended_service.proto
+          # Same normalization as cmd/internal/protogen and `make fmt`; gofumpt needs two passes here.
+          for f in daemon/extended_service.pb.go daemon/extended_service_grpc.pb.go; do
+            sed -n '/^package /,$p' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+          done
+          "$bin/gofumpt" -w daemon/extended_service.pb.go daemon/extended_service_grpc.pb.go
+          "$bin/gofumpt" -w daemon/extended_service.pb.go daemon/extended_service_grpc.pb.go
+          git diff --exit-code -- daemon/
+      - name: Compile release targets
+        run: |
+          set -euo pipefail
+          # darwin needs cgo and a macOS runner, so it is only built on release.
+          ldflags=$(cat release/LDFLAGS)
+          for arch in amd64 arm64; do
+            CGO_ENABLED=0 GOOS=linux GOARCH=$arch go build -o /dev/null -tags "$(cat release/DEFAULT_BUILD_TAGS_OTHERS)" -ldflags "$ldflags" ./cmd/sing-box
+            CGO_ENABLED=0 GOOS=windows GOARCH=$arch go build -o /dev/null -tags "$(cat release/DEFAULT_BUILD_TAGS_WINDOWS)" -ldflags "$ldflags" ./cmd/sing-box
+          done
+      - name: Lint fork changes
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: latest
+          args: --timeout=30m --new-from-rev=${{ needs.prepare.outputs.base }}
+          install-mode: binary
+          verify: false
+
+  build:
+    name: Build ${{ matrix.os }}-${{ matrix.arch }}${{ matrix.lite && '-lite' || '' }}
+    if: needs.prepare.outputs.release == 'true'
+    runs-on: ${{ matrix.os == 'darwin' && 'macos-latest' || 'ubuntu-latest' }}
+    needs:
+      - prepare
+    strategy:
+      matrix:
+        include:
+          - { os: linux, arch: amd64 }
+          - { os: linux, arch: amd64, lite: true }
+          - { os: linux, arch: arm64 }
+          - { os: linux, arch: arm64, lite: true }
+          - { os: windows, arch: amd64 }
+          - { os: windows, arch: arm64 }
+          - { os: darwin, arch: arm64 }
+    env:
+      VERSION: ${{ needs.prepare.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.prepare.outputs.go }}
+      - name: Set build tags
+        run: |
+          set -euo pipefail
+          case "${{ matrix.os }}" in
+            darwin) tags=$(cat release/DEFAULT_BUILD_TAGS) ;;
+            windows) tags=$(cat release/DEFAULT_BUILD_TAGS_WINDOWS) ;;
+            *) tags=$(cat release/DEFAULT_BUILD_TAGS_OTHERS) ;;
+          esac
+          if [[ "${{ matrix.lite }}" == "true" ]]; then
+            for t in $(tr ',' ' ' < release/FORK_LINUX_EXCLUDE_TAGS); do
+              [[ ",$tags," == *",$t,"* ]] || { echo "$t is not in DEFAULT_BUILD_TAGS_OTHERS" >&2; exit 1; }
+            done
+            tags=$(tr ',' '\n' <<< "$tags" | grep -vxF -f <(tr ',' '\n' < release/FORK_LINUX_EXCLUDE_TAGS) | paste -sd, -)
+          fi
+          echo "BUILD_TAGS=$tags" | tee -a "$GITHUB_ENV"
+      - name: Build
+        run: |
+          set -euo pipefail
+          exe=sing-box
+          [[ "${{ matrix.os }}" == windows ]] && exe=sing-box.exe
+          mkdir -p dist
+          go build -v -trimpath -o "dist/$exe" -tags "$BUILD_TAGS" \
+            -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=$VERSION' $(cat release/LDFLAGS) -s -w -buildid=" \
+            ./cmd/sing-box
+        env:
+          # macOS links cronet statically through cgo; Windows loads libcronet.dll via purego.
+          CGO_ENABLED: ${{ matrix.os == 'darwin' && '1' || '0' }}
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+      - name: Extract libcronet.dll
+        if: matrix.os == 'windows'
+        run: |
+          set -euo pipefail
+          CRONET_GO_VERSION=$(cat .github/CRONET_GO_VERSION)
+          LIBRARY_PATH="lib/windows_${{ matrix.arch }}/libcronet.dll"
+          git init "$RUNNER_TEMP/cronet-go-lib"
+          git -C "$RUNNER_TEMP/cronet-go-lib" remote add origin https://github.com/sagernet/cronet-go.git
+          git -C "$RUNNER_TEMP/cronet-go-lib" sparse-checkout set --no-cone "/$LIBRARY_PATH"
+          git -C "$RUNNER_TEMP/cronet-go-lib" fetch --depth=1 --filter=blob:none origin "$CRONET_GO_VERSION"
+          git -C "$RUNNER_TEMP/cronet-go-lib" checkout FETCH_HEAD
+          cp "$RUNNER_TEMP/cronet-go-lib/$LIBRARY_PATH" dist/
+      - name: Archive
+        run: |
+          set -euo pipefail
+          name="sing-box-$VERSION-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.lite && '-lite' || '' }}"
+          mkdir -p "release-assets/$name"
+          cp LICENSE dist/* "release-assets/$name/"
+          cd release-assets
+          if [[ "${{ matrix.os }}" == windows ]]; then
+            zip -r "$name.zip" "$name"
+          else
+            tar -czvf "$name.tar.gz" "$name"
+          fi
+          rm -r "$name"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.lite && '-lite' || '' }}
+          path: release-assets
+
+  release:
+    name: Release
+    if: needs.prepare.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - test
+      - build
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BASE: ${{ needs.prepare.outputs.base }}
+      TAG: v${{ needs.prepare.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          path: release-assets
+          merge-multiple: true
+      - name: Publish
+        run: |
+          set -euo pipefail
+          (cd release-assets && sha256sum -- * > SHA256SUMS)
+          {
+            echo "Based on [$BASE](https://github.com/SagerNet/sing-box/releases/tag/$BASE)."
+            echo
+            echo "Fork commits:"
+            echo
+            git log --reverse --format='- %s' "$BASE..$GITHUB_SHA"
+          } > "$RUNNER_TEMP/notes.md"
+          gh release create "$TAG" release-assets/* --verify-tag --prerelease \
+            --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+      - name: Keep the latest five releases
+        run: |
+          set -euo pipefail
+          gh release list --limit 100 --json tagName,createdAt \
+            --jq '[.[] | select(.tagName | test("-extended\\.[0-9]+$"))] | sort_by(.createdAt) | reverse | .[5:] | .[].tagName' |
+            while read -r old; do
+              gh release delete "$old" --yes --cleanup-tag
+            done
