@@ -7,6 +7,8 @@ import "google/protobuf/empty.proto";
 
 service ExtendedService {
   rpc GetCapabilities(google.protobuf.Empty) returns (ExtensionCapabilities) {}
+  rpc SetTailscaleForceRelay(SetTailscaleForceRelayRequest) returns (google.protobuf.Empty) {}
+  rpc SubscribeTailscaleForceRelayStatus(google.protobuf.Empty) returns (stream TailscaleForceRelayStatus) {}
   rpc SubscribeOutboundProviders(google.protobuf.Empty) returns (stream OutboundProviderStatusUpdate) {}
   rpc UpdateOutboundProvider(OutboundProviderRequest) returns (google.protobuf.Empty) {}
 }
@@ -18,6 +20,15 @@ message ExtensionCapabilities {
 message ExtensionCapability {
   string name = 1;
   int32 version = 2;
+}
+
+// Force relay is process-wide: it applies to every Tailscale endpoint.
+message SetTailscaleForceRelayRequest {
+  bool enabled = 1;
+}
+
+message TailscaleForceRelayStatus {
+  bool enabled = 1;
 }
 
 message OutboundProviderRequest {

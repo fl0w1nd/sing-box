@@ -33,6 +33,7 @@ var (
 		string(bucketOutboundProvider),
 		string(bucketRDRC),
 		string(bucketDNSCache),
+		string(bucketTailscaleForceRelay),
 	}
 
 	cacheIDDefault = []byte("default")

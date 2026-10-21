@@ -12,7 +12,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-const OutboundProviderExtensionVersion = 1
+const (
+	OutboundProviderExtensionVersion    = 1
+	TailscaleForceRelayExtensionVersion = 1
+)
 
 type ExtendedService struct {
 	UnimplementedExtendedServiceServer
@@ -27,7 +30,47 @@ func (s *ExtendedService) GetCapabilities(context.Context, *emptypb.Empty) (*Ext
 	capabilities := []*ExtensionCapability{
 		{Name: "outbound_provider", Version: OutboundProviderExtensionVersion},
 	}
+	if withTailscale {
+		capabilities = append(capabilities, &ExtensionCapability{Name: "tailscale_force_relay", Version: TailscaleForceRelayExtensionVersion})
+	}
 	return &ExtensionCapabilities{Capabilities: capabilities}, nil
+}
+
+func (s *ExtendedService) SetTailscaleForceRelay(ctx context.Context, request *SetTailscaleForceRelayRequest) (*emptypb.Empty, error) {
+	err := s.started.waitForStarted(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.started.serviceAccess.RLock()
+	instance := s.started.instance
+	s.started.serviceAccess.RUnlock()
+	if instance == nil {
+		return nil, status.Error(codes.Unavailable, "service is unavailable")
+	}
+	err = setTailscaleForceRelay(instance.cacheFile, request.Enabled)
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *ExtendedService) SubscribeTailscaleForceRelayStatus(
+	_ *emptypb.Empty,
+	server ExtendedService_SubscribeTailscaleForceRelayStatusServer,
+) error {
+	var sendErr error
+	ctx, cancel := context.WithCancel(server.Context())
+	defer cancel()
+	err := subscribeTailscaleForceRelay(ctx, func(enabled bool) {
+		sendErr = server.Send(&TailscaleForceRelayStatus{Enabled: enabled})
+		if sendErr != nil {
+			cancel()
+		}
+	})
+	if sendErr != nil {
+		return sendErr
+	}
+	return err
 }
 
 func (s *ExtendedService) SubscribeOutboundProviders(_ *emptypb.Empty, server ExtendedService_SubscribeOutboundProvidersServer) error {

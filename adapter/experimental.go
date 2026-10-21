@@ -49,6 +49,8 @@ type CacheFile interface {
 	SaveRuleSet(tag string, set *SavedBinary) error
 	LoadOutboundProvider(tag string) *SavedOutboundProvider
 	SaveOutboundProvider(tag string, provider *SavedOutboundProvider) error
+	LoadTailscaleForceRelay() (enabled bool, loaded bool, err error)
+	StoreTailscaleForceRelay(enabled bool) error
 }
 
 type SavedBinary struct {

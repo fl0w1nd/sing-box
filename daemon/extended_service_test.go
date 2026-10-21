@@ -32,7 +32,7 @@ func TestExtensionCapabilitiesKeepStartedAPIVersion(t *testing.T) {
 	for _, capability := range capabilities.Capabilities {
 		versions[capability.Name] = capability.Version
 	}
-	if versions["outbound_provider"] != 1 {
+	if versions["outbound_provider"] != 1 || withTailscale != (versions["tailscale_force_relay"] == TailscaleForceRelayExtensionVersion) {
 		t.Fatalf("unexpected extension capabilities: %+v", versions)
 	}
 }

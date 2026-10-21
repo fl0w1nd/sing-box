@@ -279,6 +279,10 @@ func (t *Endpoint) start(scope *adapter.Scope) error {
 	t.server.ControlFunc = binding.control
 	t.server.ListenPacketFunc = binding.listenPacket
 	t.server.DefaultRouteFunc = binding.defaultRoute
+	err = t.loadForceRelay()
+	if err != nil {
+		return err
+	}
 	if t.systemInterface {
 		mtu := t.systemInterfaceMTU
 		if mtu == 0 {
@@ -338,6 +342,7 @@ func (t *Endpoint) postStart(scope *adapter.Scope) error {
 		t.localBackend.Store(nil)
 		return nil
 	})
+	t.registerForceRelay(scope, localBackend.MagicConn())
 	scope.Add(func() error {
 		t.taildrop.close()
 		return nil

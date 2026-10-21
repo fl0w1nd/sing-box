@@ -15,9 +15,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ExtendedService_GetCapabilities_FullMethodName            = "/daemon.ExtendedService/GetCapabilities"
-	ExtendedService_SubscribeOutboundProviders_FullMethodName = "/daemon.ExtendedService/SubscribeOutboundProviders"
-	ExtendedService_UpdateOutboundProvider_FullMethodName     = "/daemon.ExtendedService/UpdateOutboundProvider"
+	ExtendedService_GetCapabilities_FullMethodName                    = "/daemon.ExtendedService/GetCapabilities"
+	ExtendedService_SetTailscaleForceRelay_FullMethodName             = "/daemon.ExtendedService/SetTailscaleForceRelay"
+	ExtendedService_SubscribeTailscaleForceRelayStatus_FullMethodName = "/daemon.ExtendedService/SubscribeTailscaleForceRelayStatus"
+	ExtendedService_SubscribeOutboundProviders_FullMethodName         = "/daemon.ExtendedService/SubscribeOutboundProviders"
+	ExtendedService_UpdateOutboundProvider_FullMethodName             = "/daemon.ExtendedService/UpdateOutboundProvider"
 )
 
 // ExtendedServiceClient is the client API for ExtendedService service.
@@ -25,6 +27,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExtendedServiceClient interface {
 	GetCapabilities(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ExtensionCapabilities, error)
+	SetTailscaleForceRelay(ctx context.Context, in *SetTailscaleForceRelayRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	SubscribeTailscaleForceRelayStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[TailscaleForceRelayStatus], error)
 	SubscribeOutboundProviders(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OutboundProviderStatusUpdate], error)
 	UpdateOutboundProvider(ctx context.Context, in *OutboundProviderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -47,9 +51,38 @@ func (c *extendedServiceClient) GetCapabilities(ctx context.Context, in *emptypb
 	return out, nil
 }
 
+func (c *extendedServiceClient) SetTailscaleForceRelay(ctx context.Context, in *SetTailscaleForceRelayRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, ExtendedService_SetTailscaleForceRelay_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *extendedServiceClient) SubscribeTailscaleForceRelayStatus(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[TailscaleForceRelayStatus], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &ExtendedService_ServiceDesc.Streams[0], ExtendedService_SubscribeTailscaleForceRelayStatus_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[emptypb.Empty, TailscaleForceRelayStatus]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ExtendedService_SubscribeTailscaleForceRelayStatusClient = grpc.ServerStreamingClient[TailscaleForceRelayStatus]
+
 func (c *extendedServiceClient) SubscribeOutboundProviders(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[OutboundProviderStatusUpdate], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ExtendedService_ServiceDesc.Streams[0], ExtendedService_SubscribeOutboundProviders_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ExtendedService_ServiceDesc.Streams[1], ExtendedService_SubscribeOutboundProviders_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,6 +114,8 @@ func (c *extendedServiceClient) UpdateOutboundProvider(ctx context.Context, in *
 // for forward compatibility.
 type ExtendedServiceServer interface {
 	GetCapabilities(context.Context, *emptypb.Empty) (*ExtensionCapabilities, error)
+	SetTailscaleForceRelay(context.Context, *SetTailscaleForceRelayRequest) (*emptypb.Empty, error)
+	SubscribeTailscaleForceRelayStatus(*emptypb.Empty, grpc.ServerStreamingServer[TailscaleForceRelayStatus]) error
 	SubscribeOutboundProviders(*emptypb.Empty, grpc.ServerStreamingServer[OutboundProviderStatusUpdate]) error
 	UpdateOutboundProvider(context.Context, *OutboundProviderRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedExtendedServiceServer()
@@ -95,6 +130,14 @@ type UnimplementedExtendedServiceServer struct{}
 
 func (UnimplementedExtendedServiceServer) GetCapabilities(context.Context, *emptypb.Empty) (*ExtensionCapabilities, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCapabilities not implemented")
+}
+
+func (UnimplementedExtendedServiceServer) SetTailscaleForceRelay(context.Context, *SetTailscaleForceRelayRequest) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetTailscaleForceRelay not implemented")
+}
+
+func (UnimplementedExtendedServiceServer) SubscribeTailscaleForceRelayStatus(*emptypb.Empty, grpc.ServerStreamingServer[TailscaleForceRelayStatus]) error {
+	return status.Error(codes.Unimplemented, "method SubscribeTailscaleForceRelayStatus not implemented")
 }
 
 func (UnimplementedExtendedServiceServer) SubscribeOutboundProviders(*emptypb.Empty, grpc.ServerStreamingServer[OutboundProviderStatusUpdate]) error {
@@ -143,6 +186,35 @@ func _ExtendedService_GetCapabilities_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ExtendedService_SetTailscaleForceRelay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetTailscaleForceRelayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExtendedServiceServer).SetTailscaleForceRelay(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ExtendedService_SetTailscaleForceRelay_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExtendedServiceServer).SetTailscaleForceRelay(ctx, req.(*SetTailscaleForceRelayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ExtendedService_SubscribeTailscaleForceRelayStatus_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(emptypb.Empty)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ExtendedServiceServer).SubscribeTailscaleForceRelayStatus(m, &grpc.GenericServerStream[emptypb.Empty, TailscaleForceRelayStatus]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ExtendedService_SubscribeTailscaleForceRelayStatusServer = grpc.ServerStreamingServer[TailscaleForceRelayStatus]
+
 func _ExtendedService_SubscribeOutboundProviders_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(emptypb.Empty)
 	if err := stream.RecvMsg(m); err != nil {
@@ -184,11 +256,20 @@ var ExtendedService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ExtendedService_GetCapabilities_Handler,
 		},
 		{
+			MethodName: "SetTailscaleForceRelay",
+			Handler:    _ExtendedService_SetTailscaleForceRelay_Handler,
+		},
+		{
 			MethodName: "UpdateOutboundProvider",
 			Handler:    _ExtendedService_UpdateOutboundProvider_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SubscribeTailscaleForceRelayStatus",
+			Handler:       _ExtendedService_SubscribeTailscaleForceRelayStatus_Handler,
+			ServerStreams: true,
+		},
 		{
 			StreamName:    "SubscribeOutboundProviders",
 			Handler:       _ExtendedService_SubscribeOutboundProviders_Handler,
