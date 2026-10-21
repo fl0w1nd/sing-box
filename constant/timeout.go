@@ -3,7 +3,7 @@ package constant
 import "time"
 
 const (
-	TCPKeepAliveInitial       = 5 * time.Minute
+	TCPKeepAliveInitial       = 15 * time.Second
 	TCPKeepAliveInterval      = 75 * time.Second
 	TCPConnectTimeout         = 5 * time.Second
 	TCPTimeout                = 15 * time.Second
