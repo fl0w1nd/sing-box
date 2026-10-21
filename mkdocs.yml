@@ -121,6 +121,7 @@ nav:
           - Source Format: configuration/rule-set/source-format.md
           - Headless Rule: configuration/rule-set/headless-rule.md
           - AdGuard DNS Filter: configuration/rule-set/adguard.md
+      - Outbound Provider: configuration/provider/index.md
       - Experimental:
           - configuration/experimental/index.md
           - Cache File: configuration/experimental/cache-file.md
@@ -302,6 +303,7 @@ plugins:
             Rule Set: 规则集
             Source Format: 源文件格式
             Headless Rule: 无头规则
+            Outbound Provider: 出站提供者
 
             Experimental: 实验性
             Cache File: 缓存文件

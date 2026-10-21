@@ -38,6 +38,8 @@
 
 启用缓存文件。
 
+配置 Outbound Provider 时会自动启用缓存文件，以便启动期间立即加载缓存节点。省略 `cache_file` 时，缓存使用默认路径 `cache.db`。
+
 #### path
 
 缓存文件路径，默认使用`cache.db`。

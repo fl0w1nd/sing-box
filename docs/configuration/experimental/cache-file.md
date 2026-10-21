@@ -38,6 +38,8 @@
 
 Enable cache file.
 
+Outbound providers automatically enable the cache file so cached nodes are available during startup. When `cache_file` is omitted, the cache uses the default `cache.db` path.
+
 #### path
 
 Path to the cache file.

@@ -12628,6 +12628,30 @@
                 "x-tag-reference": "outbound"
               }
             },
+            "providers": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "x-tag-reference": "provider"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "x-tag-reference": "provider"
+                  }
+                }
+              ]
+            },
+            "use_all_providers": {
+              "type": "boolean"
+            },
+            "include": {
+              "type": "string"
+            },
+            "exclude": {
+              "type": "string"
+            },
             "default": {
               "type": "string",
               "x-tag-reference": "outbound"
@@ -14393,6 +14417,30 @@
                 "type": "string",
                 "x-tag-reference": "outbound"
               }
+            },
+            "providers": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "x-tag-reference": "provider"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "x-tag-reference": "provider"
+                  }
+                }
+              ]
+            },
+            "use_all_providers": {
+              "type": "boolean"
+            },
+            "include": {
+              "type": "string"
+            },
+            "exclude": {
+              "type": "string"
             },
             "url": {
               "type": "string"

@@ -5,6 +5,8 @@ import (
 	"io"
 	"net"
 	"slices"
+	"sync"
+	"sync/atomic"
 
 	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/adapter/outbound"
@@ -35,9 +37,11 @@ type Selector struct {
 	ctx                          context.Context
 	outbound                     adapter.OutboundManager
 	logger                       logger.ContextLogger
-	tags                         []string
+	members                      *members
 	defaultTag                   string
-	outbounds                    map[string]adapter.Outbound
+	preferredTag                 common.TypedValue[string]
+	updateAccess                 sync.Mutex
+	state                        atomic.Pointer[selectorState]
 	selected                     common.TypedValue[adapter.Outbound]
 	history                      *urltest.HistoryStorage
 	interruptGroup               *interrupt.Group
@@ -45,26 +49,27 @@ type Selector struct {
 }
 
 func NewSelector(ctx context.Context, router adapter.Router, logger log.ContextLogger, tag string, options option.SelectorOutboundOptions) (adapter.Outbound, error) {
+	members, err := newMembers(ctx, options.Outbounds, options.Providers, options.UseAllProviders, options.Include, options.Exclude)
+	if err != nil {
+		return nil, err
+	}
 	outbound := &Selector{
 		Adapter:                      outbound.NewAdapter(C.TypeSelector, tag, nil, options.Outbounds),
 		ctx:                          ctx,
 		outbound:                     service.FromContext[adapter.OutboundManager](ctx),
 		logger:                       logger,
-		tags:                         options.Outbounds,
+		members:                      members,
 		defaultTag:                   options.Default,
-		outbounds:                    make(map[string]adapter.Outbound),
 		history:                      service.PtrFromContext[urltest.HistoryStorage](ctx),
 		interruptGroup:               interrupt.NewGroup(),
 		interruptExternalConnections: options.InterruptExistConnections,
 	}
-	if len(outbound.tags) == 0 {
-		return nil, E.New("missing tags")
-	}
-	for i, tag := range outbound.tags {
-		if slices.Contains(outbound.tags[:i], tag) {
+	for i, tag := range options.Outbounds {
+		if slices.Contains(options.Outbounds[:i], tag) {
 			return nil, E.New("duplicate tag: ", tag)
 		}
 	}
+	outbound.state.Store(&selectorState{outbounds: make(map[string]adapter.Outbound)})
 	return outbound, nil
 }
 
@@ -80,43 +85,31 @@ func (s *Selector) Start(stage adapter.StartStage, scope *adapter.Scope) error {
 	if stage != adapter.StartStateStart {
 		return nil
 	}
-	for i, tag := range s.tags {
-		detour, loaded := s.outbound.Outbound(tag)
-		if !loaded {
-			return E.New("outbound ", i, " not found: ", tag)
-		}
-		s.outbounds[tag] = detour
+	err := s.members.start(scope, s.rebuild)
+	if err != nil {
+		return err
 	}
 
 	if s.Tag() != "" {
 		cacheFile := service.FromContext[adapter.CacheFile](s.ctx)
 		if cacheFile != nil {
-			selected := cacheFile.LoadSelected(s.Tag())
-			if selected != "" {
-				detour, loaded := s.outbounds[selected]
-				if loaded {
-					s.selected.Store(detour)
-					return nil
-				}
-			}
+			s.preferredTag.Store(cacheFile.LoadSelected(s.Tag()))
 		}
 	}
 
-	if s.defaultTag != "" {
-		detour, loaded := s.outbounds[s.defaultTag]
-		if !loaded {
+	// A provider default may only appear after the provider starts.
+	if s.defaultTag != "" && !s.members.dynamic() {
+		if !common.Contains(s.members.staticTags, s.defaultTag) {
 			return E.New("default outbound not found: ", s.defaultTag)
 		}
-		s.selected.Store(detour)
-		return nil
 	}
 
-	s.selected.Store(s.outbounds[s.tags[0]])
+	s.rebuild()
 	return nil
 }
 
 func (s *Selector) All() []string {
-	return s.tags
+	return s.state.Load().tags
 }
 
 func (s *Selector) Selected(network string) adapter.Outbound {
@@ -130,19 +123,26 @@ func (s *Selector) AttachConnection(closer io.Closer) func() {
 func (s *Selector) References() []string {
 	selected := s.selected.Load()
 	if selected == nil {
-		return s.tags[:1]
+		tags := s.state.Load().tags
+		if len(tags) == 0 {
+			return nil
+		}
+		return tags[:1]
 	}
 	return []string{selected.Tag()}
 }
 
 func (s *Selector) SelectOutbound(tag string) bool {
-	detour, loaded := s.outbounds[tag]
+	s.updateAccess.Lock()
+	defer s.updateAccess.Unlock()
+	detour, loaded := s.state.Load().outbounds[tag]
 	if !loaded {
 		return false
 	}
-	if s.selected.Swap(detour) == detour {
-		return true
-	}
+	// The cached tag may name a provider node that is gone, so store it even
+	// when the fallback was already selected.
+	sameSelection := s.selected.Swap(detour) == detour
+	s.preferredTag.Store(tag)
 	if s.Tag() != "" {
 		cacheFile := service.FromContext[adapter.CacheFile](s.ctx)
 		if cacheFile != nil {
@@ -152,6 +152,9 @@ func (s *Selector) SelectOutbound(tag string) bool {
 			}
 		}
 	}
+	if sameSelection {
+		return true
+	}
 	s.interruptGroup.Interrupt(s.interruptExternalConnections)
 	if s.history != nil {
 		s.history.NotifyUpdated()
@@ -160,7 +163,11 @@ func (s *Selector) SelectOutbound(tag string) bool {
 }
 
 func (s *Selector) DialContext(ctx context.Context, network string, destination M.Socksaddr) (net.Conn, error) {
-	conn, err := s.selected.Load().DialContext(ctx, network, destination)
+	selected := s.selected.Load()
+	if selected == nil {
+		return nil, E.New("selector contains no outbounds")
+	}
+	conn, err := selected.DialContext(ctx, network, destination)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +175,11 @@ func (s *Selector) DialContext(ctx context.Context, network string, destination 
 }
 
 func (s *Selector) ListenPacket(ctx context.Context, destination M.Socksaddr) (net.PacketConn, error) {
-	conn, err := s.selected.Load().ListenPacket(ctx, destination)
+	selected := s.selected.Load()
+	if selected == nil {
+		return nil, E.New("selector contains no outbounds")
+	}
+	conn, err := selected.ListenPacket(ctx, destination)
 	if err != nil {
 		return nil, err
 	}
