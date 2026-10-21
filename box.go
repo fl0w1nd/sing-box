@@ -10,6 +10,7 @@ import (
 	"github.com/sagernet/sing-box/adapter/endpoint"
 	"github.com/sagernet/sing-box/adapter/inbound"
 	"github.com/sagernet/sing-box/adapter/outbound"
+	boxProvider "github.com/sagernet/sing-box/adapter/provider"
 	boxService "github.com/sagernet/sing-box/adapter/service"
 	"github.com/sagernet/sing-box/common/certificate"
 	"github.com/sagernet/sing-box/common/dialer"
@@ -48,6 +49,7 @@ type Box struct {
 	endpoint            *endpoint.Manager
 	inbound             *inbound.Manager
 	outbound            *outbound.Manager
+	provider            *boxProvider.Manager
 	service             *boxService.Manager
 	certificateProvider *boxCertificate.Manager
 	dnsTransport        *dns.TransportManager
@@ -107,6 +109,15 @@ func Context(
 	return ctx
 }
 
+func ProviderContext(ctx context.Context, registry adapter.ProviderRegistry) context.Context {
+	if service.FromContext[option.ProviderOptionsRegistry](ctx) == nil ||
+		service.FromContext[adapter.ProviderRegistry](ctx) == nil {
+		ctx = service.ContextWith[option.ProviderOptionsRegistry](ctx, registry)
+		ctx = service.ContextWith[adapter.ProviderRegistry](ctx, registry)
+	}
+	return ctx
+}
+
 func New(options Options) (*Box, error) {
 	createdAt := time.Now()
 	ctx := options.Context
@@ -118,6 +129,7 @@ func New(options Options) (*Box, error) {
 	endpointRegistry := service.FromContext[adapter.EndpointRegistry](ctx)
 	inboundRegistry := service.FromContext[adapter.InboundRegistry](ctx)
 	outboundRegistry := service.FromContext[adapter.OutboundRegistry](ctx)
+	providerRegistry := service.FromContext[adapter.ProviderRegistry](ctx)
 	dnsTransportRegistry := service.FromContext[adapter.DNSTransportRegistry](ctx)
 	serviceRegistry := service.FromContext[adapter.ServiceRegistry](ctx)
 	certificateProviderRegistry := service.FromContext[adapter.CertificateProviderRegistry](ctx)
@@ -130,6 +142,9 @@ func New(options Options) (*Box, error) {
 	}
 	if outboundRegistry == nil {
 		return nil, E.New("missing outbound registry in context")
+	}
+	if providerRegistry == nil && len(options.Providers) > 0 {
+		return nil, E.New("missing provider registry in context")
 	}
 	if dnsTransportRegistry == nil {
 		return nil, E.New("missing DNS transport registry in context")
@@ -151,7 +166,7 @@ func New(options Options) (*Box, error) {
 	var needCacheFile bool
 	var needClashAPI bool
 	var needV2RayAPI bool
-	if experimentalOptions.CacheFile != nil && experimentalOptions.CacheFile.Enabled || options.PlatformLogWriter != nil {
+	if experimentalOptions.CacheFile != nil && experimentalOptions.CacheFile.Enabled || options.PlatformLogWriter != nil || len(options.Providers) > 0 {
 		needCacheFile = true
 	}
 	if experimentalOptions.ClashAPI != nil {
@@ -209,12 +224,14 @@ func New(options Options) (*Box, error) {
 	endpointManager := endpoint.NewManager(endpointRegistry)
 	inboundManager := inbound.NewManager(inboundRegistry, endpointManager)
 	outboundManager := outbound.NewManager(outboundRegistry, endpointManager, routeOptions.Final)
+	providerManager := boxProvider.NewManager(providerRegistry)
 	dnsTransportManager := dns.NewTransportManager(dnsTransportRegistry, outboundManager, dnsOptions.Final)
 	serviceManager := boxService.NewManager(serviceRegistry)
 	certificateProviderManager := boxCertificate.NewManager(certificateProviderRegistry)
 	service.MustRegister[adapter.EndpointManager](ctx, endpointManager)
 	service.MustRegister[adapter.InboundManager](ctx, inboundManager)
 	service.MustRegister[adapter.OutboundManager](ctx, outboundManager)
+	service.MustRegister[adapter.ProviderManager](ctx, providerManager)
 	service.MustRegister[adapter.DNSTransportManager](ctx, dnsTransportManager)
 	service.MustRegister[adapter.ServiceManager](ctx, serviceManager)
 	service.MustRegister[adapter.CertificateProviderManager](ctx, certificateProviderManager)
@@ -426,6 +443,18 @@ func New(options Options) (*Box, error) {
 		service.MustRegister[adapter.CacheFile](ctx, cacheFile)
 		internalServices = append(internalServices, cacheFile)
 	}
+	for i, providerOptions := range options.Providers {
+		err = providerManager.Create(
+			ctx,
+			logFactory.NewLogger(F.ToString("provider/", providerOptions.Type, "[", providerOptions.Tag, "]")),
+			providerOptions.Tag,
+			providerOptions.Type,
+			providerOptions.Options,
+		)
+		if err != nil {
+			return nil, E.Cause(err, "initialize provider[", i, "]")
+		}
+	}
 	if needClashAPI {
 		clashServer, err := experimental.NewClashServer(ctx, logFactory.(log.ObservableFactory), common.PtrValueOrDefault(experimentalOptions.ClashAPI))
 		if err != nil {
@@ -471,6 +500,7 @@ func New(options Options) (*Box, error) {
 		endpoint:            endpointManager,
 		inbound:             inboundManager,
 		outbound:            outboundManager,
+		provider:            providerManager,
 		dnsTransport:        dnsTransportManager,
 		service:             serviceManager,
 		certificateProvider: certificateProviderManager,
@@ -583,6 +613,11 @@ func (s *Box) preStart() error {
 	if err != nil {
 		return err
 	}
+	// Providers only start, after the HTTP clients they fetch through.
+	err = s.startComponents(adapter.StartStateStart, boxComponent{"provider", s.provider})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -672,6 +707,10 @@ func (s *Box) Inbound() adapter.InboundManager {
 
 func (s *Box) Outbound() adapter.OutboundManager {
 	return s.outbound
+}
+
+func (s *Box) Provider() adapter.ProviderManager {
+	return s.provider
 }
 
 func (s *Box) Endpoint() adapter.EndpointManager {

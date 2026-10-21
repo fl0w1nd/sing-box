@@ -28,6 +28,7 @@ var (
 	prefixableType         = reflect.TypeFor[badoption.Prefixable]()
 	netipAddrType          = reflect.TypeFor[netip.Addr]()
 	netipPrefixType        = reflect.TypeFor[netip.Prefix]()
+	regexpType             = reflect.TypeFor[badoption.Regexp]()
 	httpHeaderType         = reflect.TypeFor[badoption.HTTPHeader]()
 	memoryBytesType        = reflect.TypeFor[byteformats.MemoryBytes]()
 	networkBytesCompatType = reflect.TypeFor[byteformats.NetworkBytesCompat]()
@@ -92,6 +93,8 @@ func (g *generator) Describe(valueType reflect.Type) (*Node, error) {
 		return g.Define("IPAddressOrPrefix", func() (*Node, error) {
 			return IPAddressOrPrefixNode(), nil
 		})
+	case regexpType:
+		return StringNode(), nil
 	case httpHeaderType:
 		return g.Define("HTTPHeader", func() (*Node, error) {
 			return &Node{Type: "object", AdditionalProperties: ListableOf(StringNode())}, nil

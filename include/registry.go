@@ -9,6 +9,7 @@ import (
 	"github.com/sagernet/sing-box/adapter/endpoint"
 	"github.com/sagernet/sing-box/adapter/inbound"
 	"github.com/sagernet/sing-box/adapter/outbound"
+	boxProvider "github.com/sagernet/sing-box/adapter/provider"
 	"github.com/sagernet/sing-box/adapter/service"
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/dns"
@@ -39,6 +40,7 @@ import (
 	"github.com/sagernet/sing-box/protocol/tun"
 	"github.com/sagernet/sing-box/protocol/vless"
 	"github.com/sagernet/sing-box/protocol/vmess"
+	providerRemote "github.com/sagernet/sing-box/provider/remote"
 	"github.com/sagernet/sing-box/service/api"
 	originca "github.com/sagernet/sing-box/service/origin_ca"
 	"github.com/sagernet/sing-box/service/resolved"
@@ -47,7 +49,14 @@ import (
 )
 
 func Context(ctx context.Context) context.Context {
+	ctx = box.ProviderContext(ctx, ProviderRegistry())
 	return box.Context(ctx, InboundRegistry(), OutboundRegistry(), EndpointRegistry(), DNSTransportRegistry(), ServiceRegistry(), CertificateProviderRegistry())
+}
+
+func ProviderRegistry() *boxProvider.Registry {
+	registry := boxProvider.NewRegistry()
+	providerRemote.Register(registry)
+	return registry
 }
 
 func InboundRegistry() *inbound.Registry {

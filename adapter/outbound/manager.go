@@ -23,6 +23,7 @@ type Manager struct {
 	outboundByTag           map[string]adapter.Outbound
 	defaultOutbound         adapter.Outbound
 	defaultOutboundFallback func() (adapter.Outbound, error)
+	dynamicTags             map[string]bool
 }
 
 func NewManager(registry adapter.OutboundRegistry, endpoint adapter.EndpointManager, defaultTag string) *Manager {
@@ -60,7 +61,7 @@ func (m *Manager) Start(stage adapter.StartStage, scope *adapter.Scope) error {
 			m.defaultOutbound = directOutbound
 		}
 	}
-	outbounds := m.outbounds
+	outbounds := m.staticOutbounds()
 	m.access.Unlock()
 	if stage == adapter.StartStateStart {
 		return m.startOutbounds(scope, append(outbounds, common.Map(m.endpoint.Endpoints(), func(it adapter.Endpoint) adapter.Outbound { return it })...))

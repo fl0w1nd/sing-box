@@ -30,6 +30,7 @@ var (
 		string(bucketExpand),
 		string(bucketMode),
 		string(bucketRuleSet),
+		string(bucketOutboundProvider),
 		string(bucketRDRC),
 		string(bucketDNSCache),
 	}
