@@ -20,7 +20,9 @@ func NewServer(startedService *StartedService, secret string) *grpc.Server {
 	)
 	healthServer := health.NewServer()
 	RegisterStartedServiceServer(server, startedService)
+	RegisterExtendedServiceServer(server, NewExtendedService(startedService))
 	healthServer.SetServingStatus(StartedService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
+	healthServer.SetServingStatus(ExtendedService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
 	grpc_health_v1.RegisterHealthServer(server, healthServer)
 	reflection.Register(server)
 	return server

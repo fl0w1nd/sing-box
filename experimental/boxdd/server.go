@@ -86,10 +86,12 @@ func newDaemon() (*Daemon, error) {
 	serverOptions = append(serverOptions, platformOptions...)
 	d.server = grpc.NewServer(serverOptions...)
 	daemon.RegisterStartedServiceServer(d.server, d.startedService)
+	daemon.RegisterExtendedServiceServer(d.server, daemon.NewExtendedService(d.startedService))
 	daemon.RegisterManagedServiceServer(d.server, managedService)
 	RegisterDesktopServiceServer(d.server, &desktopService{daemon: d})
 	healthServer := health.NewServer()
 	healthServer.SetServingStatus(daemon.StartedService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
+	healthServer.SetServingStatus(daemon.ExtendedService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
 	healthServer.SetServingStatus(daemon.ManagedService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
 	healthServer.SetServingStatus(DesktopService_ServiceDesc.ServiceName, grpc_health_v1.HealthCheckResponse_SERVING)
 	grpc_health_v1.RegisterHealthServer(d.server, healthServer)
@@ -406,7 +408,8 @@ func (a *daemonAuthorizer) InvokeUnary(ctx context.Context, method string, handl
 func ownerProtectedMethod(method string) bool {
 	startedPrefix := "/" + daemon.StartedService_ServiceDesc.ServiceName + "/"
 	managedPrefix := "/" + daemon.ManagedService_ServiceDesc.ServiceName + "/"
-	return strings.HasPrefix(method, startedPrefix) || strings.HasPrefix(method, managedPrefix)
+	extendedPrefix := "/" + daemon.ExtendedService_ServiceDesc.ServiceName + "/"
+	return strings.HasPrefix(method, startedPrefix) || strings.HasPrefix(method, managedPrefix) || strings.HasPrefix(method, extendedPrefix)
 }
 
 func (d *Daemon) authorizeOwnerLocked(userID string) error {
