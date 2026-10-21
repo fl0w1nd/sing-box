@@ -150,6 +150,28 @@ func urlTest(ctx context.Context, link string, detour N.Dialer) (t uint16, err e
 		return
 	}
 	resp.Body.Close()
+	if IsUnifiedDelayFromContext(ctx) {
+		firstDelay := time.Since(start)
+		second := time.Now()
+		secondCtx := ctx
+		if deadline, hasDeadline := ctx.Deadline(); hasDeadline {
+			// Leave half of the remaining time to report the first result if this stalls.
+			var cancel context.CancelFunc
+			secondCtx, cancel = context.WithDeadline(ctx, second.Add(time.Until(deadline)/2))
+			defer cancel()
+		}
+		resp, err = client.Do(req.WithContext(secondCtx))
+		if err != nil {
+			if ctx.Err() != nil {
+				return
+			}
+			t = uint16(firstDelay / time.Millisecond)
+			err = nil
+			return
+		}
+		resp.Body.Close()
+		start = second
+	}
 	t = uint16(time.Since(start) / time.Millisecond)
 	return
 }

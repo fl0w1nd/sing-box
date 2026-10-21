@@ -1,7 +1,6 @@
 package clashapi
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 	"strings"
@@ -75,7 +74,7 @@ func getGroupDelay(server *Server) func(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*time.Duration(timeout))
+		ctx, cancel := createURLTestContext(server, r.Context(), time.Millisecond*time.Duration(timeout))
 		defer cancel()
 
 		var result map[string]uint16

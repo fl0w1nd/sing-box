@@ -117,6 +117,7 @@ func (s *StartedService) newInstance(ctx context.Context, profileContent string,
 			})
 		}
 	}
+	ctx = urltest.ContextWithExperimentalOptions(ctx, options.Experimental)
 	urlTestHistoryStorage := urltest.NewHistoryStorage()
 	ctx = service.ContextWithPtr(ctx, urlTestHistoryStorage)
 	i := &Instance{
