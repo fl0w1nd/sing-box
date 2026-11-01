@@ -1,0 +1,421 @@
+{
+  "outbounds": [
+    {
+      "tag": "Clash SS",
+      "type": "shadowsocks",
+      "server": "ss.example.com",
+      "server_port": 8388,
+      "method": "aes-256-gcm",
+      "password": "pass"
+    },
+    {
+      "tag": "Clash SS obfs",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "method": "chacha20-ietf-poly1305",
+      "password": "123456",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=tls;obfs-host=bing.com"
+    },
+    {
+      "tag": "Clash SS v2ray-plugin",
+      "type": "shadowsocks",
+      "server": "v2.example.com",
+      "server_port": 443,
+      "method": "aes-128-gcm",
+      "password": "pw",
+      "plugin": "v2ray-plugin",
+      "multiplex": {
+        "enabled": true
+      },
+      "plugin_opts": "mode=websocket;tls;skip-cert-verify=true;host=v2.example.com;path=/v2;mux=1;headers={\"custom\":\"value\"}"
+    },
+    {
+      "tag": "Clash SS shadow-tls",
+      "type": "shadowsocks",
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "a2V5a2V5a2V5a2V5a2V5a2V5",
+      "detour": "Clash SS shadow-tls_shadowtls",
+      "multiplex": {
+        "enabled": true,
+        "protocol": "h2mux",
+        "max_connections": 4,
+        "padding": true,
+        "brutal": {
+          "enabled": true,
+          "up_mbps": 50,
+          "down_mbps": 100
+        }
+      }
+    },
+    {
+      "tag": "Clash SS shadow-tls_shadowtls",
+      "type": "shadowtls",
+      "server": "st.example.com",
+      "server_port": 443,
+      "version": 3,
+      "password": "stpw",
+      "tls": {
+        "enabled": true,
+        "server_name": "cloud.tencent.com",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "tag": "Clash SS 2022 udp-over-tcp",
+      "type": "shadowsocks",
+      "server": "uot.example.com",
+      "server_port": 8388,
+      "method": "2022-blake3-aes-256-gcm",
+      "password": "a2V5a2V5a2V5a2V5a2V5a2V5a2V5a2V5a2V5a2V5a2U=",
+      "udp_over_tcp": {
+        "enabled": true,
+        "version": 2
+      },
+      "detour": "Clash SS"
+    },
+    {
+      "tag": "Clash VMess ws",
+      "type": "vmess",
+      "server": "vm.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "tls": {
+        "enabled": true,
+        "server_name": "sni.example.com",
+        "insecure": false
+      },
+      "global_padding": true,
+      "authenticated_length": true,
+      "transport": {
+        "type": "ws",
+        "headers": {
+          "Host": "cdn.example.com"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol",
+        "max_early_data": 2048,
+        "path": "/ws"
+      }
+    },
+    {
+      "tag": "Clash VMess h2",
+      "type": "vmess",
+      "server": "h2.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "chacha20-poly1305",
+      "alter_id": 0,
+      "tls": {
+        "enabled": true,
+        "server_name": "a.example.com",
+        "insecure": false
+      },
+      "transport": {
+        "type": "http",
+        "path": "/h2",
+        "host": "a.example.com"
+      }
+    },
+    {
+      "tag": "Clash VMess http",
+      "type": "vmess",
+      "server": "http.example.com",
+      "server_port": 80,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "none",
+      "alter_id": 0,
+      "transport": {
+        "type": "http",
+        "headers": {
+          "Connection": "keep-alive"
+        },
+        "method": "GET",
+        "path": "/",
+        "host": "http.example.com"
+      }
+    },
+    {
+      "tag": "Clash VMess grpc",
+      "type": "vmess",
+      "server": "grpc.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "tls": {
+        "enabled": true,
+        "server_name": "grpc.example.com",
+        "insecure": false
+      },
+      "transport": {
+        "type": "grpc",
+        "service_name": "svc"
+      }
+    },
+    {
+      "tag": "Clash VLESS reality",
+      "type": "vless",
+      "server": "reality.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "PUBKEY",
+          "short_id": "0088"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "Clash VLESS ws",
+      "type": "vless",
+      "server": "ws.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "ws.example.com",
+        "insecure": false
+      },
+      "packet_encoding": "packetaddr",
+      "transport": {
+        "type": "httpupgrade",
+        "headers": {},
+        "path": "/vless",
+        "host": "ws.example.com"
+      }
+    },
+    {
+      "tag": "Clash Trojan",
+      "type": "trojan",
+      "server": "trojan.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "t.example.com",
+        "insecure": true,
+        "alpn": [
+          "h2",
+          "http/1.1"
+        ],
+        "certificate_sha256": [
+          "ABEiM0RVZneImaq7zN3u/wARIjNEVWZ3iJmqu8zd7v8="
+        ]
+      },
+      "network": "tcp"
+    },
+    {
+      "tag": "Clash Trojan ws",
+      "type": "trojan",
+      "server": "trojanws.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "cdn.example.com",
+        "insecure": false
+      },
+      "transport": {
+        "type": "ws",
+        "headers": {
+          "Host": "cdn.example.com"
+        },
+        "path": "/tws"
+      }
+    },
+    {
+      "tag": "Clash Trojan shadow-tls",
+      "type": "trojan",
+      "server": "tst.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "detour": "Clash Trojan shadow-tls_shadowtls"
+    },
+    {
+      "tag": "Clash Trojan shadow-tls_shadowtls",
+      "type": "shadowtls",
+      "server": "tst.example.com",
+      "server_port": 443,
+      "version": 3,
+      "password": "stpw",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.apple.com"
+      }
+    },
+    {
+      "tag": "Clash Hysteria2",
+      "type": "hysteria2",
+      "server": "hy2.example.com",
+      "server_port": 443,
+      "password": "hy2pw",
+      "obfs": {
+        "type": "salamander",
+        "password": "obfspw"
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "hy2.example.com",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "hop_interval": "15s",
+      "server_ports": [
+        "20000:30000",
+        "40000:40000"
+      ],
+      "up_mbps": 30,
+      "down_mbps": 200
+    },
+    {
+      "tag": "Clash Hysteria2 gecko",
+      "type": "hysteria2",
+      "server": "gecko.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "obfs": {
+        "type": "gecko",
+        "min_packet_size": 600,
+        "max_packet_size": 2048,
+        "password": "g"
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "gecko.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "Clash Hysteria",
+      "type": "hysteria",
+      "server": "hy.example.com",
+      "server_port": 443,
+      "disable_mtu_discovery": true,
+      "tls": {
+        "enabled": true,
+        "server_name": "hy.example.com",
+        "insecure": false
+      },
+      "auth_str": "auth",
+      "up_mbps": 30,
+      "down_mbps": 200,
+      "obfs": "obfs",
+      "recv_window_conn": 12582912,
+      "recv_window": 52428800
+    },
+    {
+      "tag": "Clash TUIC",
+      "type": "tuic",
+      "server": "tuic.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "tpw",
+      "tls": {
+        "enabled": true,
+        "server_name": "tuic.example.com",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ],
+        "certificate": [
+          "-----BEGIN CERTIFICATE-----\nMIIBszCCAVmgAwIBAgIUQ0FfUVJmRWNnFHqmhQIDAQABo1MwUTAdBgNVHQ4EFgQU\n-----END CERTIFICATE-----\n"
+        ]
+      },
+      "congestion_control": "bbr",
+      "udp_relay_mode": "quic",
+      "zero_rtt_handshake": true,
+      "heartbeat": "10000ms"
+    },
+    {
+      "tag": "Clash AnyTLS",
+      "type": "anytls",
+      "server": "anytls.example.com",
+      "server_port": 443,
+      "password": "apw",
+      "tls": {
+        "enabled": true,
+        "server_name": "a.example.com",
+        "insecure": false,
+        "utls": {
+          "enabled": true,
+          "fingerprint": "firefox"
+        }
+      },
+      "idle_session_check_interval": "30s",
+      "idle_session_timeout": "30s",
+      "min_idle_session": 0,
+      "disable_reuse": true
+    },
+    {
+      "tag": "Clash Snell v4",
+      "type": "snell",
+      "server": "snell.example.com",
+      "server_port": 443,
+      "psk": "psk",
+      "version": 4,
+      "obfs_mode": "http",
+      "obfs_host": "bing.com"
+    },
+    {
+      "tag": "Clash SOCKS5",
+      "type": "socks",
+      "server": "socks.example.com",
+      "server_port": 1080,
+      "version": "5",
+      "username": "u",
+      "password": "p"
+    },
+    {
+      "tag": "Clash HTTP",
+      "type": "http",
+      "server": "http.example.com",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "http.example.com",
+        "insecure": false
+      },
+      "username": "u",
+      "password": "p",
+      "headers": {
+        "X-Test": "v"
+      }
+    },
+    {
+      "tag": "Clash SSH",
+      "type": "ssh",
+      "server": "ssh.example.com",
+      "server_port": 22,
+      "user": "root",
+      "password": "pw",
+      "host_key": [
+        "ssh-ed25519 AAAA"
+      ]
+    },
+    {
+      "tag": "12345",
+      "type": "shadowsocks",
+      "server": "number.example.com",
+      "server_port": 8388,
+      "method": "aes-256-gcm",
+      "password": "12345678"
+    }
+  ]
+}

@@ -681,3 +681,22 @@ func TestConcurrentUpdateReturnsUpdating(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestDecodeOutboundsFormats(t *testing.T) {
+	outbounds, err := decodeOutbounds([]byte(`{"outbounds":[{"type":"direct","tag":"a"}]}`))
+	if err != nil || len(outbounds) != 1 {
+		t.Fatalf("sing-box document: %d outbounds, %v", len(outbounds), err)
+	}
+	outbounds, err = decodeOutbounds([]byte("proxies:\n  - {name: a, type: trojan, server: example.com, port: 443, password: p}\n"))
+	if err != nil || len(outbounds) != 1 || !strings.Contains(string(outbounds[0]), `"type":"trojan"`) {
+		t.Fatalf("Clash document: %s, %v", outbounds, err)
+	}
+	_, err = decodeOutbounds([]byte(`{"outbounds":[`))
+	if err == nil || !strings.Contains(err.Error(), "decode provider document") {
+		t.Fatalf("broken sing-box document: %v", err)
+	}
+	outbounds, err = decodeOutbounds([]byte("not a subscription"))
+	if err != nil || len(outbounds) != 0 {
+		t.Fatalf("unknown content: %d outbounds, %v", len(outbounds), err)
+	}
+}

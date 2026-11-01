@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/sub-store-org/Sub-Store",
+  "commit": "352f01b7091c99f4e219c44e4ec96f3288059843",
+  "files": {
+    "backend/src/core/proxy-utils/index.js": "646c29913118d566b5b6ba04e09aafb04200cf2a90332812a031e009d573d9da",
+    "backend/src/core/proxy-utils/parsers/index.js": "a6b9a073e0aa32201768b046a4e08f9c65dc56688d16baf769382f46acc1fd84",
+    "backend/src/core/proxy-utils/parsers/peggy/trojan-uri.js": "1814899aed15386242bc6911888dcd1340ea8a5a7dab9787a2da04e37d637a4a",
+    "backend/src/core/proxy-utils/preprocessors/index.js": "b37a11e672d9b3e8450e05a2eaa501b6e6e1003c847e7c03f4f641e050b3a6d0",
+    "backend/src/core/proxy-utils/producers/clashmeta.js": "ddc4b74e853a1fdb927bb9370f3616d3ffed2b56c6b3f5da8c2c614af3c14f8a",
+    "backend/src/core/proxy-utils/producers/sing-box.js": "50f2d8d0f1f78fdd61d53b5e5cd455fb063067ac7af040d710621f30df89bd47",
+    "backend/src/core/proxy-utils/producers/utils.js": "c636d5b47857cc0ab9447d4fd500186e835ffc2f4d4ea7e7d4a92d8c30984b49",
+    "backend/src/core/proxy-utils/transport-path.js": "41f473e3c350c2fdaf35bd1017bb25ac2ab5698f01ea3699e8bf9beec8e7c7ff",
+    "backend/src/core/proxy-utils/ech-utils.js": "ff7e4cc4ad0a1d5ac1f108b6e257ca011f132f7e0f4752f20c1749817bbda8c1",
+    "backend/src/core/proxy-utils/vmess-security.js": "90f9e15e041bd0fbedf0f812d5d31523d679be860c84088087a732a8425a8451",
+    "backend/src/utils/index.js": "3a5a6b8b9cc80ca7f246654923d01e7e4eda8254076699b128b37761a44d7577",
+    "backend/src/utils/yaml.js": "298c4c1c3b90ab51f72411bae545509068a04e167a835bfbe278e96c0f3b089a",
+    "backend/src/utils/rs.js": "199909f61eb92f3e8b08e3adbcfb6f5a44aa7d6e6010e572759e8e69e06997d3"
+  }
+}

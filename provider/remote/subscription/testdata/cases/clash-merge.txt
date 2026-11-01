@@ -1,0 +1,13 @@
+base: &base
+  type: ss
+  cipher: aes-256-gcm
+  password: pw
+  port: 8388
+proxies:
+  - <<: *base
+    name: Merged 1
+    server: m1.example.com
+  - <<: *base
+    name: Merged 2
+    server: m2.example.com
+    port: 9999

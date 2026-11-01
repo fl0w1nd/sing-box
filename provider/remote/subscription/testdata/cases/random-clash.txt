@@ -1,0 +1,301 @@
+proxies:
+  - {"name": "C0", "type": "http", "server": "c.example.com", "port": 1080, "cipher": "grpc", "skip-cert-verify": "chrome", "encryption": "prefer-v6", "udp-relay-mode": {"up": {"down": "http", "public-key": "10-20"}}, "flow": true}
+  - {"name": "C1", "type": "tuic", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "network": "ws", "udp-over-tcp": "gecko", "headers": true}
+  - {"name": "C2", "type": "tuic", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "tls": "salamander", "cipher": "", "flow": 3, "token": "ipv4-prefer", "fingerprint": [], "hop-interval": "10-20"}
+  - {"name": "C3", "type": "snell", "server": "2001:db8::1", "port": "8443", "http-opts": true, "congestion-controller": {"max-early-data": "prefer-v6", "mode": "v4-only"}, "udp-relay-mode": 2, "dialer-proxy": "h2", "grpc-opts": "prefer-v6", "reduce-rtt": 2, "tls": {"password": true}}
+  - {"name": "C4", "type": "ss", "server": "2001:db8::1", "port": 1080, "cipher": "none", "password": "pw", "plugin": {"short-id": "ipv4-prefer"}, "reuse": {"public-key": {"Host": "10-20"}, "enable": "/p"}, "ip-version": "auto"}
+  - {"name": "C5", "type": "naive", "server": "1.2.3.4", "port": "8443", "version": "a.com", "username": "grpc", "token": "salamander"}
+  - {"name": "C6", "type": "tuic", "server": "1.2.3.4", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw"}
+  - {"name": "C7", "type": "ssh", "server": "c.example.com", "port": 1080, "flow": []}
+  - {"name": "C8", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "sni": "salamander", "alterId": "chrome", "encryption": ["h2", "tcp"], "reality-opts": "ipv4-prefer", "reuse": "h2"}
+  - {"name": "C9", "type": "naive", "server": "c.example.com", "port": 443}
+  - {"name": "C10", "type": "http", "server": "1.2.3.4", "port": 1080, "alterId": "v4-only", "encryption": "/p?ed=2048", "skip-cert-verify": {"query-server-name": 3, "mux": "/p?ed=2048", "host": "ws"}, "plugin": 1, "version": "prefer-v6", "flow": true, "servername": [0, "auto"]}
+  - {"name": "C11", "type": "hysteria2", "server": "c.example.com", "port": 1080, "password": "pw", "fingerprint": "h2", "udp": "/p", "psk": "quic", "reality-opts": "bbr", "udp-over-tcp": 0, "http-opts": "", "grpc-opts": "bbr", "username": null}
+  - {"name": "C12", "type": "vless", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C13", "type": "anytls", "server": "2001:db8::1", "port": 1080, "password": "pw", "plugin": 2}
+  - {"name": "C14", "type": "ssh", "server": "c.example.com", "port": 443, "reuse": "auto", "reduce-rtt": ["gecko"], "skip-cert-verify": ["xhttp", "auto"], "fingerprint": "auto"}
+  - {"name": "C15", "type": "anytls", "server": "c.example.com", "port": 443, "password": "h2", "h2-opts": "ws", "http-opts": "/p", "congestion-controller": "quic", "alterId": "gecko", "heartbeat-interval": ["salamander", "v4-only"]}
+  - {"name": "C16", "type": "http", "server": "1.2.3.4", "port": 443, "encryption": "/p", "dialer-proxy": "gecko", "client-fingerprint": {}, "grpc-opts": "gecko", "global-padding": [443], "sni": "prefer-v6", "up": "chrome"}
+  - {"name": "C17", "type": "snell", "server": "2001:db8::1", "port": "8443", "ws-opts": "30", "http-opts": "quic", "reduce-rtt": {}, "encryption": "", "congestion-controller": "1080", "dialer-proxy": "salamander"}
+  - {"name": "C18", "type": "http", "server": "1.2.3.4", "port": 443, "auth-str": {}, "tfo": null, "ws-opts": {}, "alterId": "v4-only", "mode": "xtls-rprx-vision"}
+  - {"name": "C19", "type": "tuic", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "udp": 0, "heartbeat-interval": {"up": "grpc", "v2ray-http-upgrade": "auto"}, "token": false, "udp-relay-mode": [], "obfs-password": null, "disable-sni": {"mux": "h2"}, "grpc-opts": [], "skip-cert-verify": ["/p?ed=2048"]}
+  - {"name": "C20", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "grpc-opts": {"public-key": 5, "method": "h2"}, "encryption": "xhttp", "tls": "gecko", "ip-version": "h2"}
+  - {"name": "C21", "type": "hysteria", "server": "1.2.3.4", "port": 1080, "http-opts": {"up": "prefer-v6", "mux": "chrome", "enabled": {"query-server-name": "10-20", "Host": 2, "v2ray-http-upgrade": "10-20"}}, "encryption": {"enable": {"down": "h2"}, "Host": []}, "h2-opts": "bbr", "heartbeat-interval": "quic", "tls": 3, "down": "salamander"}
+  - {"name": "C22", "type": "vless", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "global-padding": {"headers": "/p", "config": "/p", "path": "http"}, "ech-opts": "/p?ed=2048", "encryption": {"grpc-service-name": "ws", "down": [2, "grpc"], "short-id": 0}, "tfo": 3, "dialer-proxy": "a.com", "alterId": "30", "ip-version": "grpc"}
+  - {"name": "C23", "type": "hysteria2", "server": "2001:db8::1", "port": "8443", "password": "pw", "obfs-password": "none", "encryption": "/p?ed=2048"}
+  - {"name": "C24", "type": "ss", "server": "1.2.3.4", "port": "8443", "cipher": "chacha20-ietf-poly1305", "password": "pw", "plugin": {"path": 0, "grpc-service-name": "xhttp"}, "plugin-opts": {"mode": "tls", "host": "o.com", "password": "x", "version": 1, "tls": false, "mux": true}, "token": {"public-key": "quic"}, "h2-opts": true, "hop-interval": "tcp"}
+  - {"name": "C25", "type": "hysteria", "server": "2001:db8::1", "port": "8443", "obfs-password": []}
+  - {"name": "C26", "type": "trojan", "server": "1.2.3.4", "port": 443, "password": "pw", "client-fingerprint": 5}
+  - {"name": "C27", "type": "socks5", "server": "2001:db8::1", "port": "8443", "mode": {"password": 5}, "down": {"query-server-name": "ws"}, "cipher": {"headers": "/p?ed=2048"}}
+  - {"name": "C28", "type": "tuic", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "obfs-password": "/p", "encryption": "chrome"}
+  - {"name": "C29", "type": "vless", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "psk": "ipv4-prefer"}
+  - {"name": "C30", "type": "vless", "server": "1.2.3.4", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "udp-relay-mode": "native", "client-fingerprint": 5, "global-padding": "tcp", "fingerprint": "v4-only", "sni": 443}
+  - {"name": "C31", "type": "vmess", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "reality-opts": "quic", "disable-sni": ""}
+  - {"name": "C32", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "tfo": "auto", "auth-str": "prefer-v6", "client-fingerprint": {"path": "grpc", "up": {"up": true, "Host": 1, "path": 2}}, "network": "10-20", "skip-cert-verify": "grpc"}
+  - {"name": "C33", "type": "snell", "server": "c.example.com", "port": 1080}
+  - {"name": "C34", "type": "ssh", "server": "c.example.com", "port": 1080, "network": "xhttp", "congestion-controller": "auto", "packet-encoding": 3, "udp-over-tcp": ["tcp"], "plugin": "none", "global-padding": [], "mode": ["native"], "ports": "v4-only"}
+  - {"name": "C35", "type": "hysteria", "server": "1.2.3.4", "port": "8443", "obfs-password": "xhttp", "tfo": "quic", "ports": [], "flow": {"up": "xhttp", "short-id": "quic", "host": {"down": 0, "short-id": 443}}}
+  - {"name": "C36", "type": "anytls", "server": "c.example.com", "port": 1080, "password": "pw", "ws-opts": "grpc", "encryption": true, "token": "grpc", "obfs": ""}
+  - {"name": "C37", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "sni": "1080", "up": {"tls": "30", "enabled": ["30"], "config": "xhttp"}, "smux": 443}
+  - {"name": "C38", "type": "tuic", "server": "1.2.3.4", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "tfo": "salamander"}
+  - {"name": "C39", "type": "tuic", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "sni": null}
+  - {"name": "C40", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "heartbeat-interval": "native", "grpc-opts": null, "ip-version": "h2", "ws-opts": 1, "encryption": null, "username": {"version": "none", "tls": "ws"}, "network": "salamander"}
+  - {"name": "C41", "type": "ssh", "server": "2001:db8::1", "port": "8443"}
+  - {"name": "C42", "type": "socks5", "server": "1.2.3.4", "port": 1080, "reuse": "10-20", "h2-opts": null, "packet-encoding": "quic", "plugin-opts": 1, "up": {}, "http-opts": "none"}
+  - {"name": "C43", "type": "hysteria2", "server": "c.example.com", "port": 443, "password": "pw"}
+  - {"name": "C44", "type": "ssh", "server": "c.example.com", "port": 443, "ech-opts": "tcp", "plugin": "prefer-v6", "congestion-controller": {"host": ["1080", true], "method": 2}}
+  - {"name": "C45", "type": "http", "server": "2001:db8::1", "port": 443, "headers": "native", "http-opts": "bbr", "network": "h2"}
+  - {"name": "C46", "type": "naive", "server": "1.2.3.4", "port": "8443", "grpc-opts": "1080", "alpn": 3, "obfs-password": "salamander"}
+  - {"name": "C47", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "udp-over-tcp": "ws", "psk": "1080"}
+  - {"name": "C48", "type": "socks5", "server": "1.2.3.4", "port": 1080, "global-padding": [], "token": true, "auth-str": ""}
+  - {"name": "C49", "type": "hysteria2", "server": "2001:db8::1", "port": "8443", "password": "pw", "obfs": "xhttp", "udp": "1080", "plugin": "none", "sni": true, "plugin-opts": "bbr"}
+  - {"name": "C50", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "encryption": [], "headers": "/p", "http-opts": "http"}
+  - {"name": "C51", "type": "hysteria2", "server": "c.example.com", "port": 443, "password": "pw", "up": 2, "ech-opts": 443}
+  - {"name": "C52", "type": "tuic", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "auth-str": "grpc"}
+  - {"name": "C53", "type": "hysteria2", "server": "2001:db8::1", "port": "8443", "password": "pw", "reduce-rtt": 0, "obfs-opts": {"tls": "salamander"}, "headers": 443, "packet-encoding": 0, "alterId": "ws", "flow": 0, "cipher": "/p", "disable-sni": {}}
+  - {"name": "C54", "type": "ssh", "server": "2001:db8::1", "port": 443, "encryption": 1, "obfs": "auto", "psk": 0, "alpn": {"method": [], "host": "bbr"}, "udp": "bbr", "client-fingerprint": "ipv4-prefer"}
+  - {"name": "C55", "type": "snell", "server": "c.example.com", "port": 1080, "plugin-opts": {"query-server-name": {"grpc-service-name": "tcp", "public-key": false, "max-early-data": ""}}, "hop-interval": 1, "mode": "tcp"}
+  - {"name": "C56", "type": "trojan", "server": "2001:db8::1", "port": "8443", "password": "pw", "auth-str": "xtls-rprx-vision"}
+  - {"name": "C57", "type": "anytls", "server": "1.2.3.4", "port": 1080, "password": "pw", "disable-sni": null, "psk": {}, "udp-relay-mode": 3, "plugin-opts": "", "hop-interval": "tcp", "ech-opts": "none"}
+  - {"name": "C58", "type": "hysteria2", "server": "c.example.com", "port": "8443", "password": "pw", "network": "ipv4-prefer", "ip-version": "none", "mode": "a.com", "reduce-rtt": "h2", "username": 2, "tls": ["grpc"], "hop-interval": "h2", "ech-opts": []}
+  - {"name": "C59", "type": "anytls", "server": "c.example.com", "port": 443, "password": "pw", "alpn": [1, "10-20"], "sni": "prefer-v6", "skip-cert-verify": 0, "up": "tcp", "hop-interval": 1, "tfo": "auto", "heartbeat-interval": "h2", "mode": "tcp"}
+  - {"name": "C60", "type": "tuic", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "skip-cert-verify": ["/p?ed=2048", 5]}
+  - {"name": "C61", "type": "tuic", "server": "1.2.3.4", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "grpc", "token": "xhttp", "plugin": [], "udp-relay-mode": "none", "alterId": "quic", "psk": "ipv4-prefer", "reuse": "xtls-rprx-vision", "network": "1080"}
+  - {"name": "C62", "type": "naive", "server": "2001:db8::1", "port": 443, "encryption": {"up": "ipv4-prefer"}, "tfo": "salamander", "disable-sni": true, "obfs": 5, "auth-str": {"query-server-name": "/p?ed=2048", "path": 3}}
+  - {"name": "C63", "type": "vmess", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "alpn": "1080", "reality-opts": true, "ech-opts": "salamander"}
+  - {"name": "C64", "type": "anytls", "server": "2001:db8::1", "port": 1080, "password": "pw", "heartbeat-interval": "xtls-rprx-vision", "encryption": 443, "ports": "10-20", "client-fingerprint": {"up": ["v4-only", "ws"], "query-server-name": {"max-early-data": ""}, "tls": false}, "packet-encoding": "30", "token": 3, "alpn": ["10-20", "grpc"]}
+  - {"name": "C65", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "token": "/p?ed=2048", "tls": "h2", "psk": [0], "network": "v4-only", "disable-sni": null}
+  - {"name": "C66", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "down": "/p?ed=2048"}
+  - {"name": "C67", "type": "hysteria2", "server": "c.example.com", "port": 443, "password": "pw", "h2-opts": "ws", "ech-opts": "auto", "obfs-opts": "none", "version": "/p", "obfs-password": "tcp", "fingerprint": "h2", "obfs": false, "sni": "native"}
+  - {"name": "C68", "type": "ssh", "server": "c.example.com", "port": 1080, "flow": "salamander", "plugin": "bbr", "fingerprint": {"query-server-name": {"grpc-service-name": "gecko", "query-server-name": "auto", "mode": "h2"}}, "version": "none", "global-padding": "xtls-rprx-vision"}
+  - {"name": "C69", "type": "anytls", "server": "1.2.3.4", "port": "8443", "password": "pw", "psk": [1, "xhttp"], "mode": "v4-only", "hop-interval": "none", "servername": "30", "congestion-controller": 5, "version": {"version": "10-20", "password": "auto", "query-server-name": [false]}}
+  - {"name": "C70", "type": "ssh", "server": "2001:db8::1", "port": "8443", "ip-version": "none", "grpc-opts": "a.com", "obfs-password": "quic", "reduce-rtt": 0}
+  - {"name": "C71", "type": "snell", "server": "2001:db8::1", "port": 443, "obfs-opts": "", "plugin": 0, "smux": "none", "username": 443, "password": "/p"}
+  - {"name": "C72", "type": "anytls", "server": "2001:db8::1", "port": 1080, "password": "pw", "plugin-opts": "gecko", "tfo": ["xtls-rprx-vision", {"host": "quic", "enable": "/p?ed=2048", "method": null}], "fingerprint": ["ipv4-prefer", "xhttp"], "client-fingerprint": "gecko", "packet-encoding": "10-20", "grpc-opts": 3, "disable-sni": 0, "network": "h2"}
+  - {"name": "C73", "type": "hysteria", "server": "1.2.3.4", "port": 1080, "ip-version": "/p"}
+  - {"name": "C74", "type": "tuic", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "tfo": 3, "fingerprint": "gecko", "grpc-opts": "ipv4-prefer", "disable-sni": [0], "username": "30", "global-padding": "prefer-v6", "dialer-proxy": "a.com", "down": "tcp"}
+  - {"name": "C75", "type": "naive", "server": "2001:db8::1", "port": "8443", "reduce-rtt": {}, "flow": {"method": "10-20", "enabled": "quic"}, "ws-opts": {"tls": "auto"}, "grpc-opts": "10-20", "headers": "xhttp", "heartbeat-interval": "grpc", "alpn": []}
+  - {"name": "C76", "type": "tuic", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "skip-cert-verify": "quic"}
+  - {"name": "C77", "type": "naive", "server": "1.2.3.4", "port": 1080, "tfo": 3, "psk": "grpc", "ports": {"path": "none", "config": {"headers": "h2", "password": "xhttp"}}, "token": "none", "servername": "chrome", "obfs-opts": "auto", "up": "tcp", "udp-over-tcp": {"enabled": "10-20", "tls": ["tcp"], "public-key": "auto"}}
+  - {"name": "C78", "type": "ss", "server": "c.example.com", "port": 443, "cipher": "2022-blake3-aes-128-gcm", "password": "pw", "alterId": "ws", "obfs-opts": {}}
+  - {"name": "C79", "type": "tuic", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "auth-str": true, "global-padding": "a.com", "heartbeat-interval": 5, "plugin-opts": null, "down": 2, "grpc-opts": "v4-only", "packet-encoding": 2, "version": "none"}
+  - {"name": "C80", "type": "anytls", "server": "1.2.3.4", "port": "8443", "password": "pw", "h2-opts": "30", "disable-sni": null, "reuse": "xtls-rprx-vision", "obfs-password": "ipv4-prefer", "ip-version": ""}
+  - {"name": "C81", "type": "trojan", "server": "c.example.com", "port": 1080, "password": "pw", "udp-relay-mode": false, "congestion-controller": 1, "h2-opts": "/p?ed=2048"}
+  - {"name": "C82", "type": "anytls", "server": "2001:db8::1", "port": "8443", "password": "pw", "obfs-opts": "ipv4-prefer", "h2-opts": "10-20", "network": "native", "ws-opts": "v4-only", "packet-encoding": 2}
+  - {"name": "C83", "type": "naive", "server": "c.example.com", "port": "8443", "obfs-opts": "xhttp", "obfs-password": "/p", "reuse": ["ipv4-prefer"], "ech-opts": "1080"}
+  - {"name": "C84", "type": "tuic", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": false, "reality-opts": 5, "up": {"password": "salamander", "max-early-data": "tcp"}, "udp-relay-mode": {}, "h2-opts": "http", "sni": "gecko", "plugin": "auto", "client-fingerprint": true}
+  - {"name": "C85", "type": "ssh", "server": "2001:db8::1", "port": "8443", "password": "h2", "alpn": 0}
+  - {"name": "C86", "type": "ss", "server": "2001:db8::1", "port": 443, "cipher": "aes-128-gcm", "password": "pw", "plugin": "obfs", "plugin-opts": {"mode": "websocket", "host": "o.com", "password": "x", "version": 0, "tls": true, "mux": true}, "down": [], "packet-encoding": "prefer-v6", "version": false}
+  - {"name": "C87", "type": "snell", "server": "1.2.3.4", "port": 443, "flow": {"version": ["tcp"], "password": {"max-early-data": false}, "early-data-header-name": "chrome"}, "hop-interval": "1080", "up": "gecko", "version": "auto", "disable-sni": [], "grpc-opts": {}, "network": []}
+  - {"name": "C88", "type": "snell", "server": "2001:db8::1", "port": "8443", "global-padding": "ipv4-prefer", "reduce-rtt": [], "ip-version": false, "congestion-controller": "30", "skip-cert-verify": "30", "up": "/p?ed=2048", "sni": "a.com"}
+  - {"name": "C89", "type": "tuic", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw"}
+  - {"name": "C90", "type": "ss", "server": "1.2.3.4", "port": 443, "cipher": "chacha20-ietf-poly1305", "password": "pw", "plugin": "shadow-tls", "plugin-opts": {"mode": "tls", "host": "o.com", "password": "x", "version": 0, "tls": true, "mux": "1"}, "skip-cert-verify": [], "reuse": "v4-only", "psk": "h2", "up": "a.com", "congestion-controller": []}
+  - {"name": "C91", "type": "vless", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "alterId": "v4-only", "ports": "ipv4-prefer", "plugin": "none", "obfs-opts": 443, "version": "http", "servername": "a.com", "plugin-opts": "xhttp", "udp": "h2"}
+  - {"name": "C92", "type": "hysteria", "server": "2001:db8::1", "port": 443, "h2-opts": "xhttp", "plugin": "prefer-v6", "heartbeat-interval": "native", "mode": {"max-early-data": "", "down": "salamander", "version": {"host": 443}}, "auth-str": "gecko", "dialer-proxy": "native"}
+  - {"name": "C93", "type": "tuic", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": null, "down": {"short-id": {"host": "auto"}, "mux": "gecko", "tls": "tcp"}, "alpn": 0, "obfs": "xhttp", "sni": {"version": "xtls-rprx-vision", "early-data-header-name": ["h2", "ipv4-prefer"]}, "udp": "grpc"}
+  - {"name": "C94", "type": "tuic", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "skip-cert-verify": {}}
+  - {"name": "C95", "type": "anytls", "server": "c.example.com", "port": 1080, "password": "pw", "obfs-opts": "30", "udp-over-tcp": "none", "cipher": "/p", "reuse": 0, "flow": "10-20", "ports": "ipv4-prefer"}
+  - {"name": "C96", "type": "ss", "server": "2001:db8::1", "port": "8443", "cipher": "chacha20-ietf-poly1305", "password": "pw", "congestion-controller": null, "version": "salamander", "heartbeat-interval": "native"}
+  - {"name": "C97", "type": "tuic", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": {}, "h2-opts": "1080", "down": "gecko", "network": [["quic"]], "auth-str": [], "packet-encoding": "auto"}
+  - {"name": "C98", "type": "trojan", "server": "2001:db8::1", "port": "8443", "password": "pw"}
+  - {"name": "C99", "type": "vless", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C100", "type": "socks5", "server": "c.example.com", "port": 443, "reality-opts": true, "reuse": "/p", "sni": {"grpc-service-name": "xtls-rprx-vision", "Host": "h2"}, "http-opts": "h2"}
+  - {"name": "C101", "type": "http", "server": "1.2.3.4", "port": "8443", "udp-relay-mode": false, "disable-sni": "1080", "plugin-opts": "xtls-rprx-vision", "reality-opts": "30", "version": 443, "grpc-opts": "auto", "username": 1}
+  - {"name": "C102", "type": "vmess", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "obfs-opts": "gecko", "client-fingerprint": [{"public-key": "/p", "short-id": "h2", "config": "a.com"}, "prefer-v6"], "alpn": "prefer-v6", "skip-cert-verify": {"method": false, "Host": "ipv4-prefer", "v2ray-http-upgrade": "bbr"}}
+  - {"name": "C103", "type": "vmess", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "down": ["h2", 1]}
+  - {"name": "C104", "type": "anytls", "server": "2001:db8::1", "port": 443, "password": "pw", "network": "xtls-rprx-vision"}
+  - {"name": "C105", "type": "naive", "server": "1.2.3.4", "port": 443, "sni": "none"}
+  - {"name": "C106", "type": "ssh", "server": "2001:db8::1", "port": "8443", "udp": "a.com"}
+  - {"name": "C107", "type": "vmess", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "servername": {"early-data-header-name": "grpc"}, "disable-sni": "grpc", "h2-opts": 2, "alpn": "xhttp", "tfo": ["ws"], "version": "grpc"}
+  - {"name": "C108", "type": "ss", "server": "1.2.3.4", "port": "8443", "cipher": "chacha20-ietf-poly1305", "password": "pw", "reduce-rtt": "a.com", "tfo": {"query-server-name": "quic"}, "ip-version": [false], "ports": "a.com", "reality-opts": "h2"}
+  - {"name": "C109", "type": "ss", "server": "c.example.com", "port": 1080, "cipher": "aes-128-gcm", "password": "pw", "disable-sni": 1}
+  - {"name": "C110", "type": "http", "server": "1.2.3.4", "port": 443, "servername": true, "ech-opts": "h2", "obfs-opts": "gecko", "udp": "grpc", "obfs-password": ["xhttp"], "ip-version": "prefer-v6", "headers": "xtls-rprx-vision", "tls": 443}
+  - {"name": "C111", "type": "ssh", "server": "2001:db8::1", "port": "8443"}
+  - {"name": "C112", "type": "trojan", "server": "1.2.3.4", "port": 1080, "password": "pw", "smux": 5, "tfo": "chrome", "network": "1080", "tls": {}, "global-padding": "ipv4-prefer", "congestion-controller": 443, "sni": "grpc"}
+  - {"name": "C113", "type": "vmess", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C114", "type": "ss", "server": "1.2.3.4", "port": 1080, "cipher": "2022-blake3-aes-128-gcm", "password": "pw", "udp": "30", "smux": "", "up": "none", "obfs-opts": 0, "ws-opts": null, "ech-opts": []}
+  - {"name": "C115", "type": "hysteria2", "server": "1.2.3.4", "port": 443, "password": "pw", "h2-opts": false}
+  - {"name": "C116", "type": "hysteria", "server": "2001:db8::1", "port": "8443", "client-fingerprint": ["/p?ed=2048"], "servername": 443}
+  - {"name": "C117", "type": "naive", "server": "c.example.com", "port": 1080}
+  - {"name": "C118", "type": "hysteria2", "server": "1.2.3.4", "port": "8443", "password": "pw", "obfs-password": [443, "xtls-rprx-vision"], "reduce-rtt": "1080"}
+  - {"name": "C119", "type": "anytls", "server": "1.2.3.4", "port": 1080, "password": "pw"}
+  - {"name": "C120", "type": "trojan", "server": "c.example.com", "port": "8443", "password": "pw", "encryption": "gecko", "udp-relay-mode": "quic", "username": "xtls-rprx-vision"}
+  - {"name": "C121", "type": "ssh", "server": "1.2.3.4", "port": 1080, "reduce-rtt": "tcp", "plugin-opts": {}, "reality-opts": "10-20", "skip-cert-verify": "native", "udp-relay-mode": {"enable": "none", "query-server-name": "ipv4-prefer"}, "ws-opts": {"enabled": "", "host": 443, "early-data-header-name": "auto"}}
+  - {"name": "C122", "type": "http", "server": "1.2.3.4", "port": 443, "encryption": {"password": "", "short-id": "grpc"}, "alterId": "30", "up": "bbr", "client-fingerprint": "auto", "plugin": "xtls-rprx-vision"}
+  - {"name": "C123", "type": "http", "server": "c.example.com", "port": 443}
+  - {"name": "C124", "type": "http", "server": "1.2.3.4", "port": 443, "plugin": "10-20", "dialer-proxy": "h2", "ws-opts": 2, "reuse": "/p?ed=2048", "servername": "grpc"}
+  - {"name": "C125", "type": "tuic", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "token": 3, "flow": "10-20", "dialer-proxy": 1, "obfs": false, "heartbeat-interval": "ws", "alterId": 1, "http-opts": "chrome"}
+  - {"name": "C126", "type": "ss", "server": "1.2.3.4", "port": 1080, "cipher": "none", "password": "pw", "heartbeat-interval": 5, "obfs-password": "h2", "client-fingerprint": "gecko", "reuse": "30"}
+  - {"name": "C127", "type": "vless", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C128", "type": "ssh", "server": "1.2.3.4", "port": "8443", "encryption": "prefer-v6", "congestion-controller": "10-20", "smux": 443, "ech-opts": "quic", "grpc-opts": "tcp", "skip-cert-verify": 5, "tls": 2, "dialer-proxy": 3}
+  - {"name": "C129", "type": "ssh", "server": "c.example.com", "port": 443, "ws-opts": {}, "smux": [], "mode": "auto", "reuse": "h2", "ports": 3}
+  - {"name": "C130", "type": "socks5", "server": "c.example.com", "port": "8443", "http-opts": {"mux": "bbr", "tls": "xhttp"}}
+  - {"name": "C131", "type": "vless", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C132", "type": "snell", "server": "2001:db8::1", "port": "8443", "skip-cert-verify": "http", "tfo": ["native"], "congestion-controller": 3, "plugin-opts": "gecko", "obfs-password": 3, "reality-opts": [false]}
+  - {"name": "C133", "type": "hysteria", "server": "c.example.com", "port": "8443"}
+  - {"name": "C134", "type": "naive", "server": "2001:db8::1", "port": 1080, "psk": "prefer-v6", "tfo": {"v2ray-http-upgrade": "a.com", "password": "1080"}}
+  - {"name": "C135", "type": "trojan", "server": "1.2.3.4", "port": "8443", "password": "pw", "dialer-proxy": false, "token": "xtls-rprx-vision", "udp-over-tcp": null, "udp": "chrome", "mode": ["grpc", "30"], "plugin-opts": "prefer-v6", "username": 0, "alterId": "v4-only"}
+  - {"name": "C136", "type": "http", "server": "1.2.3.4", "port": 443, "ports": "gecko", "obfs-password": "h2", "auth-str": "quic", "grpc-opts": "quic", "ip-version": "salamander", "alterId": "/p?ed=2048"}
+  - {"name": "C137", "type": "anytls", "server": "2001:db8::1", "port": 443, "password": "pw", "encryption": "salamander", "psk": {"up": ["1080"], "enabled": "/p"}, "dialer-proxy": 5, "udp-over-tcp": "native"}
+  - {"name": "C138", "type": "vless", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C139", "type": "hysteria", "server": "2001:db8::1", "port": 443, "obfs": null}
+  - {"name": "C140", "type": "vmess", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "packet-encoding": "1080", "reality-opts": "xhttp", "reuse": "10-20", "token": "h2", "ws-opts": [2, true], "encryption": "quic", "mode": ""}
+  - {"name": "C141", "type": "hysteria2", "server": "c.example.com", "port": 443, "password": "pw", "alterId": {"method": false, "Host": [true]}, "reuse": 3, "obfs": ["v4-only", 5], "packet-encoding": "prefer-v6", "down": true}
+  - {"name": "C142", "type": "trojan", "server": "c.example.com", "port": "8443", "password": "pw", "udp": ["/p", "xhttp"], "udp-over-tcp": "bbr"}
+  - {"name": "C143", "type": "hysteria", "server": "2001:db8::1", "port": 1080, "network": 5, "heartbeat-interval": {"v2ray-http-upgrade": 3, "headers": "http", "up": "quic"}, "token": [], "sni": "bbr", "plugin": [], "up": "ws"}
+  - {"name": "C144", "type": "tuic", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "smux": 2, "up": "h2", "ports": "http", "disable-sni": "a.com", "mode": "tcp", "packet-encoding": {"query-server-name": "xtls-rprx-vision", "enabled": "h2", "short-id": []}}
+  - {"name": "C145", "type": "naive", "server": "2001:db8::1", "port": "8443", "servername": "", "obfs": "xhttp", "ip-version": "quic", "mode": "salamander", "auth-str": "bbr", "reality-opts": "prefer-v6", "version": {}, "global-padding": 2}
+  - {"name": "C146", "type": "naive", "server": "1.2.3.4", "port": "8443"}
+  - {"name": "C147", "type": "hysteria", "server": "1.2.3.4", "port": 1080, "udp-relay-mode": "grpc", "smux": false, "cipher": 3}
+  - {"name": "C148", "type": "anytls", "server": "1.2.3.4", "port": 1080, "password": "pw", "plugin": 5, "heartbeat-interval": "none", "cipher": 443, "flow": [], "mode": "1080", "network": "h2", "tfo": "salamander", "skip-cert-verify": "1080"}
+  - {"name": "C149", "type": "socks5", "server": "1.2.3.4", "port": 443}
+  - {"name": "C150", "type": "http", "server": "c.example.com", "port": 1080, "ech-opts": "10-20", "psk": {"method": "1080", "grpc-service-name": 2, "mode": "/p"}, "h2-opts": "none", "reality-opts": 3, "network": "30", "token": "/p?ed=2048"}
+  - {"name": "C151", "type": "trojan", "server": "1.2.3.4", "port": "8443", "password": "pw", "sni": "salamander", "obfs-password": {"query-server-name": "bbr", "mode": "h2", "config": {}}, "tls": "/p?ed=2048", "hop-interval": "none", "mode": {"headers": "v4-only", "public-key": [3, "10-20"]}}
+  - {"name": "C152", "type": "snell", "server": "2001:db8::1", "port": 443, "dialer-proxy": "gecko"}
+  - {"name": "C153", "type": "naive", "server": "1.2.3.4", "port": 1080, "ip-version": {}}
+  - {"name": "C154", "type": "ss", "server": "2001:db8::1", "port": 1080, "cipher": "none", "password": "pw", "plugin": "shadow-tls", "plugin-opts": {"mode": "http", "host": "o.com", "password": "x", "version": 2, "tls": true, "mux": true}, "fingerprint": "prefer-v6"}
+  - {"name": "C155", "type": "naive", "server": "1.2.3.4", "port": 1080, "network": "30", "ip-version": 2, "http-opts": "v4-only", "down": "ipv4-prefer", "skip-cert-verify": "1080", "sni": 443}
+  - {"name": "C156", "type": "vmess", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "alpn": 2, "ech-opts": "ipv4-prefer", "reuse": "gecko", "ws-opts": "tcp"}
+  - {"name": "C157", "type": "vless", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "encryption": {"grpc-service-name": [3]}, "congestion-controller": "prefer-v6", "alpn": "none", "packet-encoding": "10-20", "servername": {"tls": "gecko", "password": "xtls-rprx-vision"}, "network": "tcp", "udp-relay-mode": {"password": ["none"]}, "plugin": {"version": 0, "path": "xhttp", "enabled": "30"}}
+  - {"name": "C158", "type": "snell", "server": "c.example.com", "port": "8443", "ip-version": "xhttp", "udp": false, "down": ["gecko"], "ws-opts": "salamander", "udp-relay-mode": 1, "plugin-opts": "", "disable-sni": null, "smux": "tcp"}
+  - {"name": "C159", "type": "hysteria", "server": "2001:db8::1", "port": 443, "version": false, "udp-relay-mode": false, "auth-str": "bbr"}
+  - {"name": "C160", "type": "http", "server": "2001:db8::1", "port": 443, "ports": [], "ech-opts": false, "disable-sni": 3}
+  - {"name": "C161", "type": "tuic", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "sni": {"mux": []}, "version": {}, "heartbeat-interval": "grpc", "ws-opts": [], "udp": "quic", "ip-version": "bbr"}
+  - {"name": "C162", "type": "tuic", "server": "1.2.3.4", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "flow": "none", "version": 3, "mode": ["xhttp", null], "psk": {"Host": "none"}, "network": "auto"}
+  - {"name": "C163", "type": "hysteria2", "server": "2001:db8::1", "port": "8443", "password": "pw", "disable-sni": "ws"}
+  - {"name": "C164", "type": "vless", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "skip-cert-verify": "none", "http-opts": 5, "network": "10-20", "auth-str": ["prefer-v6"], "headers": {}}
+  - {"name": "C165", "type": "snell", "server": "c.example.com", "port": 443, "plugin-opts": "xtls-rprx-vision", "reduce-rtt": "/p", "hop-interval": 1}
+  - {"name": "C166", "type": "http", "server": "1.2.3.4", "port": 443, "headers": 0, "ech-opts": "/p", "psk": "quic", "skip-cert-verify": "prefer-v6", "http-opts": "gecko"}
+  - {"name": "C167", "type": "naive", "server": "2001:db8::1", "port": 443, "udp": "native", "ports": "salamander", "down": 443, "tls": "native", "cipher": "v4-only"}
+  - {"name": "C168", "type": "vmess", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "encryption": "gecko", "ws-opts": "native", "ports": "tcp", "password": "ipv4-prefer", "udp": ["a.com"], "down": "ipv4-prefer", "disable-sni": "h2"}
+  - {"name": "C169", "type": "trojan", "server": "1.2.3.4", "port": "8443", "password": "pw", "http-opts": false, "disable-sni": "xhttp", "token": "bbr", "plugin-opts": true, "mode": "xtls-rprx-vision", "cipher": "native", "alterId": "a.com", "packet-encoding": "native"}
+  - {"name": "C170", "type": "hysteria", "server": "c.example.com", "port": "8443", "cipher": "http"}
+  - {"name": "C171", "type": "trojan", "server": "2001:db8::1", "port": 1080, "password": "pw", "fingerprint": "a.com", "flow": "10-20"}
+  - {"name": "C172", "type": "naive", "server": "2001:db8::1", "port": "8443", "udp-relay-mode": "", "ports": "salamander"}
+  - {"name": "C173", "type": "http", "server": "1.2.3.4", "port": 1080, "token": "ws", "global-padding": "auto", "packet-encoding": 5}
+  - {"name": "C174", "type": "ss", "server": "c.example.com", "port": 1080, "cipher": "2022-blake3-aes-128-gcm", "password": "pw", "encryption": "h2", "flow": "", "congestion-controller": 2, "reality-opts": "xtls-rprx-vision", "dialer-proxy": "xhttp"}
+  - {"name": "C175", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "headers": "native", "mode": 2}
+  - {"name": "C176", "type": "anytls", "server": "1.2.3.4", "port": 443, "password": {}, "username": "xhttp", "headers": 5, "tfo": "ws", "version": ["a.com"]}
+  - {"name": "C177", "type": "socks5", "server": "2001:db8::1", "port": 1080}
+  - {"name": "C178", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "servername": "http", "global-padding": "ipv4-prefer", "version": "gecko"}
+  - {"name": "C179", "type": "http", "server": "2001:db8::1", "port": "8443", "cipher": "prefer-v6", "flow": "quic", "obfs-opts": "chrome", "auth-str": "30"}
+  - {"name": "C180", "type": "ss", "server": "c.example.com", "port": 443, "cipher": "none", "password": "pw", "plugin": "obfs", "plugin-opts": {"mode": "http", "host": "o.com", "password": "x", "version": 3, "tls": true, "mux": true}, "h2-opts": "none", "packet-encoding": "30"}
+  - {"name": "C181", "type": "hysteria2", "server": "c.example.com", "port": "8443", "password": "pw"}
+  - {"name": "C182", "type": "naive", "server": "1.2.3.4", "port": 443, "tls": "prefer-v6", "auth-str": "ws"}
+  - {"name": "C183", "type": "ssh", "server": "2001:db8::1", "port": 443, "alterId": {"public-key": "h2", "up": "salamander", "password": {"headers": false, "password": ""}}, "username": "http", "tls": "ipv4-prefer", "http-opts": {"path": "http", "grpc-service-name": "grpc"}, "dialer-proxy": "h2", "smux": "/p?ed=2048", "sni": "http", "servername": "ipv4-prefer"}
+  - {"name": "C184", "type": "snell", "server": "c.example.com", "port": "8443"}
+  - {"name": "C185", "type": "vmess", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "encryption": "30", "grpc-opts": "a.com", "disable-sni": "http", "mode": "xhttp", "up": "quic", "network": []}
+  - {"name": "C186", "type": "snell", "server": "1.2.3.4", "port": 443, "global-padding": "grpc", "ports": 443, "headers": "prefer-v6", "obfs-password": 5, "ech-opts": "ipv4-prefer"}
+  - {"name": "C187", "type": "tuic", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "skip-cert-verify": ["1080", "v4-only"], "client-fingerprint": "xtls-rprx-vision", "headers": "salamander", "alterId": {"grpc-service-name": 3}, "obfs-opts": "10-20", "smux": "v4-only"}
+  - {"name": "C188", "type": "http", "server": "c.example.com", "port": 1080}
+  - {"name": "C189", "type": "socks5", "server": "1.2.3.4", "port": "8443", "alterId": "ipv4-prefer", "reality-opts": "ws"}
+  - {"name": "C190", "type": "naive", "server": "1.2.3.4", "port": 443, "version": "salamander", "udp-over-tcp": "salamander", "udp-relay-mode": {"max-early-data": "h2"}, "obfs-opts": "auto"}
+  - {"name": "C191", "type": "naive", "server": "2001:db8::1", "port": "8443", "sni": "ipv4-prefer", "network": 2, "reuse": "grpc", "token": "xtls-rprx-vision", "h2-opts": {"max-early-data": "", "mux": "10-20"}, "headers": "gecko"}
+  - {"name": "C192", "type": "snell", "server": "2001:db8::1", "port": "8443", "ports": "v4-only", "plugin-opts": "10-20", "smux": {"max-early-data": "native", "public-key": "grpc"}}
+  - {"name": "C193", "type": "http", "server": "1.2.3.4", "port": "8443", "tls": [["xhttp"], {"headers": "grpc", "mode": 1}]}
+  - {"name": "C194", "type": "snell", "server": "2001:db8::1", "port": 443, "skip-cert-verify": "gecko", "alterId": false, "congestion-controller": "/p", "ws-opts": 443}
+  - {"name": "C195", "type": "ssh", "server": "1.2.3.4", "port": 443, "sni": "a.com"}
+  - {"name": "C196", "type": "snell", "server": "c.example.com", "port": 443, "up": "salamander"}
+  - {"name": "C197", "type": "hysteria", "server": "1.2.3.4", "port": "8443", "client-fingerprint": "10-20", "plugin": "1080"}
+  - {"name": "C198", "type": "ssh", "server": "1.2.3.4", "port": "8443", "udp": false, "congestion-controller": "1080", "servername": "30", "h2-opts": "xtls-rprx-vision"}
+  - {"name": "C199", "type": "ss", "server": "1.2.3.4", "port": "8443", "cipher": "none", "password": "http", "hop-interval": 443, "headers": false, "plugin-opts": "10-20", "ports": 1, "obfs": ["none", "tcp"], "username": "prefer-v6"}
+  - {"name": "C200", "type": "vless", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C201", "type": "vmess", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "packet-encoding": "none", "servername": "chrome", "ws-opts": null, "sni": 5, "tls": "tcp", "ip-version": 0}
+  - {"name": "C202", "type": "naive", "server": "2001:db8::1", "port": 443, "plugin": "", "flow": 5, "skip-cert-verify": true}
+  - {"name": "C203", "type": "vmess", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "obfs-password": true, "alpn": ""}
+  - {"name": "C204", "type": "ss", "server": "c.example.com", "port": "8443", "cipher": "chacha20-ietf-poly1305", "password": "10-20", "ech-opts": "xtls-rprx-vision", "ports": 1, "token": {"down": "h2", "public-key": "bbr", "up": 443}, "obfs-password": null, "headers": 0}
+  - {"name": "C205", "type": "socks5", "server": "2001:db8::1", "port": 1080, "token": {"config": "quic"}, "alpn": null, "dialer-proxy": "30", "tls": "quic", "up": {"enable": 443, "host": "quic"}, "flow": "prefer-v6", "plugin-opts": [{"headers": "http", "mux": "salamander"}, {}], "down": 3}
+  - {"name": "C206", "type": "trojan", "server": "2001:db8::1", "port": 1080, "password": "pw", "mode": "30"}
+  - {"name": "C207", "type": "anytls", "server": "1.2.3.4", "port": "8443", "password": "pw", "cipher": "none", "sni": "", "alterId": "xtls-rprx-vision", "smux": "", "fingerprint": "none", "skip-cert-verify": "h2"}
+  - {"name": "C208", "type": "vmess", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "global-padding": "/p?ed=2048", "encryption": "prefer-v6", "ports": {"host": true, "mux": "10-20"}, "servername": "http", "dialer-proxy": {}, "ech-opts": ["30"], "plugin": "a.com"}
+  - {"name": "C209", "type": "hysteria", "server": "1.2.3.4", "port": "8443", "ports": {}, "reality-opts": "1080", "plugin": "/p?ed=2048", "udp-relay-mode": "xtls-rprx-vision"}
+  - {"name": "C210", "type": "socks5", "server": "1.2.3.4", "port": "8443", "reuse": "ipv4-prefer", "tls": "h2", "flow": "ipv4-prefer", "username": "/p", "fingerprint": 3, "client-fingerprint": "ipv4-prefer"}
+  - {"name": "C211", "type": "vmess", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "skip-cert-verify": "30", "up": 3, "reuse": {}, "global-padding": "h2"}
+  - {"name": "C212", "type": "hysteria2", "server": "1.2.3.4", "port": 443, "password": "pw", "congestion-controller": "30", "flow": null, "udp-over-tcp": 2, "tfo": "/p", "http-opts": [], "servername": "bbr"}
+  - {"name": "C213", "type": "vmess", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "global-padding": [null], "disable-sni": "auto", "client-fingerprint": 0, "mode": "salamander", "obfs": "xhttp", "servername": "1080", "down": "auto", "plugin-opts": []}
+  - {"name": "C214", "type": "ssh", "server": "c.example.com", "port": 443, "cipher": "h2", "token": {"down": [], "public-key": [443, 5], "early-data-header-name": "gecko"}}
+  - {"name": "C215", "type": "trojan", "server": "2001:db8::1", "port": 1080, "password": "pw", "disable-sni": 1, "global-padding": {"query-server-name": []}, "alpn": "salamander", "sni": "tcp"}
+  - {"name": "C216", "type": "ssh", "server": "c.example.com", "port": "8443", "up": {"up": "ipv4-prefer", "early-data-header-name": "10-20", "path": true}}
+  - {"name": "C217", "type": "trojan", "server": "1.2.3.4", "port": 443, "password": "pw", "tfo": "auto"}
+  - {"name": "C218", "type": "vless", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "flow": "auto", "alterId": "/p", "udp-relay-mode": "10-20"}
+  - {"name": "C219", "type": "vmess", "server": "c.example.com", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "alterId": "gecko", "mode": "none", "udp": 5, "reality-opts": []}
+  - {"name": "C220", "type": "snell", "server": "2001:db8::1", "port": 1080, "servername": 3, "ech-opts": "http", "reuse": "h2", "dialer-proxy": {"path": "h2", "enabled": "auto"}, "heartbeat-interval": "quic", "congestion-controller": 0, "alpn": {}}
+  - {"name": "C221", "type": "vless", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "alterId": null}
+  - {"name": "C222", "type": "vmess", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "token": "ipv4-prefer", "reduce-rtt": "a.com", "ports": "ipv4-prefer", "obfs-opts": [], "alterId": "/p?ed=2048", "udp": [1]}
+  - {"name": "C223", "type": "naive", "server": "1.2.3.4", "port": 1080, "version": {"max-early-data": {"early-data-header-name": "h2", "config": "auto", "up": null}, "up": "ws"}}
+  - {"name": "C224", "type": "hysteria", "server": "c.example.com", "port": 1080, "reuse": "v4-only", "hop-interval": {"query-server-name": "ipv4-prefer"}, "smux": "grpc", "udp-over-tcp": false, "heartbeat-interval": 3}
+  - {"name": "C225", "type": "ssh", "server": "1.2.3.4", "port": "8443", "smux": "quic", "udp-relay-mode": "/p", "psk": "tcp", "cipher": "ipv4-prefer", "reality-opts": true, "obfs-password": 1, "http-opts": ""}
+  - {"name": "C226", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "dialer-proxy": "/p?ed=2048", "http-opts": null, "alpn": "none", "alterId": {"max-early-data": "/p", "method": {"host": "bbr", "early-data-header-name": "h2"}, "down": "ipv4-prefer"}, "up": "xhttp", "plugin": false, "ports": [443], "obfs-password": "salamander"}
+  - {"name": "C227", "type": "tuic", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "auth-str": 2, "udp-relay-mode": ["h2", true], "cipher": false, "skip-cert-verify": null}
+  - {"name": "C228", "type": "tuic", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "hop-interval": "tcp", "disable-sni": 3, "version": "quic", "skip-cert-verify": "ws", "global-padding": {"enabled": "gecko", "tls": false, "version": false}, "cipher": {}, "auth-str": "a.com", "ech-opts": "30"}
+  - {"name": "C229", "type": "trojan", "server": "1.2.3.4", "port": 1080, "password": "pw"}
+  - {"name": "C230", "type": "hysteria2", "server": "c.example.com", "port": "8443", "password": "pw", "up": "none", "congestion-controller": true, "username": "/p?ed=2048", "grpc-opts": [["ipv4-prefer"]], "ech-opts": "ipv4-prefer", "cipher": "xtls-rprx-vision", "dialer-proxy": false}
+  - {"name": "C231", "type": "hysteria2", "server": "c.example.com", "port": "8443", "password": "pw", "username": "prefer-v6", "client-fingerprint": "bbr", "udp-relay-mode": {"enabled": "10-20", "query-server-name": "xhttp", "tls": "http"}, "flow": "quic", "obfs-opts": ["quic"], "encryption": null}
+  - {"name": "C232", "type": "anytls", "server": "1.2.3.4", "port": "8443", "password": "pw", "auth-str": "native", "sni": [[1, "xhttp"]], "ports": "1080", "http-opts": null}
+  - {"name": "C233", "type": "ss", "server": "2001:db8::1", "port": 1080, "cipher": "chacha20-ietf-poly1305", "password": "pw", "ws-opts": false, "ports": {"headers": "ws", "mux": "1080"}}
+  - {"name": "C234", "type": "hysteria2", "server": "2001:db8::1", "port": 443, "password": "pw", "heartbeat-interval": true, "up": "tcp", "headers": ["h2", "http"], "ports": "xtls-rprx-vision", "plugin-opts": false, "skip-cert-verify": "h2", "ws-opts": ""}
+  - {"name": "C235", "type": "tuic", "server": "1.2.3.4", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "password": "pw", "smux": "grpc", "obfs-password": false, "packet-encoding": "tcp", "reduce-rtt": {}, "mode": 3, "ws-opts": [], "disable-sni": "chrome", "username": "ipv4-prefer"}
+  - {"name": "C236", "type": "snell", "server": "2001:db8::1", "port": "8443", "auth-str": "gecko"}
+  - {"name": "C237", "type": "naive", "server": "2001:db8::1", "port": "8443", "udp-over-tcp": "none", "network": "quic", "auth-str": "prefer-v6", "password": {"enable": "grpc", "version": "v4-only"}}
+  - {"name": "C238", "type": "hysteria2", "server": "2001:db8::1", "port": 443, "password": "pw"}
+  - {"name": "C239", "type": "http", "server": "2001:db8::1", "port": "8443"}
+  - {"name": "C240", "type": "anytls", "server": "2001:db8::1", "port": "8443", "password": "pw", "http-opts": "tcp", "congestion-controller": [], "tfo": "native", "ports": {"Host": "a.com"}, "reuse": "gecko"}
+  - {"name": "C241", "type": "ss", "server": "c.example.com", "port": 443, "cipher": "none", "password": "pw", "alpn": "/p", "token": "none", "plugin": "bbr", "tfo": "10-20", "h2-opts": ["chrome", "/p?ed=2048"], "fingerprint": "grpc"}
+  - {"name": "C242", "type": "http", "server": "c.example.com", "port": 1080, "ech-opts": "30", "udp-relay-mode": "a.com", "flow": "grpc", "up": "salamander", "plugin": "prefer-v6", "smux": "h2", "client-fingerprint": "bbr", "udp": "auto"}
+  - {"name": "C243", "type": "vmess", "server": "2001:db8::1", "port": 1080, "uuid": "11111111-1111-4111-8111-111111111111", "down": "1080", "cipher": "v4-only"}
+  - {"name": "C244", "type": "hysteria2", "server": "c.example.com", "port": "8443", "password": "chrome", "plugin-opts": 3, "encryption": [], "up": "1080", "ip-version": [0], "ech-opts": "", "http-opts": "", "heartbeat-interval": "salamander"}
+  - {"name": "C245", "type": "trojan", "server": "2001:db8::1", "port": 1080, "password": "pw"}
+  - {"name": "C246", "type": "socks5", "server": "c.example.com", "port": "8443", "reuse": 0, "global-padding": false}
+  - {"name": "C247", "type": "socks5", "server": "1.2.3.4", "port": 1080, "flow": "tcp", "up": "xhttp", "tls": "1080"}
+  - {"name": "C248", "type": "snell", "server": "c.example.com", "port": 443, "hop-interval": "http", "reuse": "xhttp", "heartbeat-interval": "1080", "tls": "auto", "dialer-proxy": "grpc", "udp": "xhttp", "version": false}
+  - {"name": "C249", "type": "naive", "server": "c.example.com", "port": 1080, "h2-opts": "gecko", "username": "/p?ed=2048", "global-padding": ["xtls-rprx-vision", {}], "dialer-proxy": "xtls-rprx-vision"}
+  - {"name": "C250", "type": "trojan", "server": "c.example.com", "port": "8443", "password": "pw", "packet-encoding": {"host": "http"}, "username": [], "ws-opts": 2, "global-padding": true, "down": [], "flow": "10-20", "ech-opts": "gecko", "disable-sni": {}}
+  - {"name": "C251", "type": "hysteria", "server": "c.example.com", "port": "8443", "fingerprint": "/p", "up": "h2", "reality-opts": "grpc", "obfs-opts": 2, "alterId": "1080", "udp-over-tcp": 2, "ech-opts": "/p", "auth-str": {"max-early-data": false}}
+  - {"name": "C252", "type": "vless", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "skip-cert-verify": "v4-only", "ports": 3, "fingerprint": {"tls": "http", "config": "1080"}, "mode": null}
+  - {"name": "C253", "type": "vless", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "plugin-opts": "xtls-rprx-vision", "flow": ["ws"], "sni": [""], "encryption": "h2"}
+  - {"name": "C254", "type": "naive", "server": "1.2.3.4", "port": 443, "packet-encoding": "", "ws-opts": "/p", "dialer-proxy": ["10-20"], "down": ["30", "1080"]}
+  - {"name": "C255", "type": "vmess", "server": "c.example.com", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "alterId": "gecko"}
+  - {"name": "C256", "type": "snell", "server": "c.example.com", "port": 1080, "alterId": 3, "heartbeat-interval": "chrome", "token": null, "up": 443, "psk": [true]}
+  - {"name": "C257", "type": "hysteria", "server": "2001:db8::1", "port": "8443", "hop-interval": "none", "reality-opts": "30", "version": "", "username": {}}
+  - {"name": "C258", "type": "http", "server": "2001:db8::1", "port": "8443", "reuse": 1, "heartbeat-interval": "prefer-v6", "global-padding": 1, "token": "prefer-v6", "fingerprint": 3, "headers": "http", "hop-interval": "gecko"}
+  - {"name": "C259", "type": "ssh", "server": "c.example.com", "port": "8443", "plugin-opts": "native", "grpc-opts": "xhttp"}
+  - {"name": "C260", "type": "trojan", "server": "1.2.3.4", "port": 1080, "password": "pw", "global-padding": "native", "ports": {"early-data-header-name": 1}, "client-fingerprint": [true, "v4-only"], "obfs-opts": null, "h2-opts": {}}
+  - {"name": "C261", "type": "hysteria", "server": "1.2.3.4", "port": 1080, "grpc-opts": "/p", "obfs-opts": "quic", "cipher": "http", "sni": "a.com", "fingerprint": false, "global-padding": "h2", "ws-opts": {"mux": "bbr", "host": {"down": 5}}, "disable-sni": ""}
+  - {"name": "C262", "type": "snell", "server": "c.example.com", "port": 1080, "tfo": 5, "hop-interval": {"mode": {"up": true, "public-key": "a.com"}, "short-id": "1080"}, "udp-relay-mode": "prefer-v6", "client-fingerprint": ["none", "prefer-v6"], "plugin-opts": "10-20", "cipher": 1}
+  - {"name": "C263", "type": "naive", "server": "1.2.3.4", "port": 443}
+  - {"name": "C264", "type": "ss", "server": "c.example.com", "port": 443, "cipher": "2022-blake3-aes-128-gcm", "password": "pw", "flow": 0, "disable-sni": 3, "plugin": "auto", "heartbeat-interval": 443}
+  - {"name": "C265", "type": "snell", "server": "2001:db8::1", "port": "8443", "client-fingerprint": "auto", "disable-sni": 2}
+  - {"name": "C266", "type": "vless", "server": "c.example.com", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111", "congestion-controller": {}, "h2-opts": "h2", "fingerprint": "xtls-rprx-vision", "reuse": "xhttp", "alterId": "bbr", "ech-opts": 0}
+  - {"name": "C267", "type": "ssh", "server": "c.example.com", "port": 443, "down": "30"}
+  - {"name": "C268", "type": "naive", "server": "c.example.com", "port": 443, "version": "h2", "hop-interval": "quic"}
+  - {"name": "C269", "type": "hysteria", "server": "1.2.3.4", "port": 443, "plugin-opts": "bbr", "heartbeat-interval": {"down": ["quic"], "v2ray-http-upgrade": "", "config": ["quic"]}, "mode": 5, "encryption": {"down": null, "mode": false}, "hop-interval": 3, "dialer-proxy": false, "udp-over-tcp": 2, "ports": "tcp"}
+  - {"name": "C270", "type": "socks5", "server": "c.example.com", "port": 443, "plugin-opts": "http", "dialer-proxy": 1, "obfs-opts": "gecko", "sni": "h2", "client-fingerprint": {"query-server-name": "chrome", "public-key": true, "Host": "a.com"}, "up": []}
+  - {"name": "C271", "type": "hysteria", "server": "1.2.3.4", "port": 443, "plugin": "v4-only", "hop-interval": false, "tfo": ["ipv4-prefer"], "token": "auto", "down": "h2"}
+  - {"name": "C272", "type": "trojan", "server": "c.example.com", "port": 443, "password": "pw", "client-fingerprint": ""}
+  - {"name": "C273", "type": "http", "server": "2001:db8::1", "port": 443, "servername": 2, "obfs": "a.com", "sni": "chrome", "hop-interval": "30"}
+  - {"name": "C274", "type": "http", "server": "1.2.3.4", "port": 1080, "alpn": false, "ip-version": "a.com", "udp": "xtls-rprx-vision", "tls": []}
+  - {"name": "C275", "type": "socks5", "server": "2001:db8::1", "port": 1080, "global-padding": "h2", "dialer-proxy": "ipv4-prefer", "auth-str": "native", "ws-opts": "xhttp", "username": 5, "psk": {"Host": "grpc", "max-early-data": {"short-id": "prefer-v6", "down": "xtls-rprx-vision"}, "enabled": 1}}
+  - {"name": "C276", "type": "ssh", "server": "2001:db8::1", "port": 443, "heartbeat-interval": "xhttp", "token": "prefer-v6"}
+  - {"name": "C277", "type": "hysteria2", "server": "2001:db8::1", "port": 1080, "password": "pw", "h2-opts": "bbr"}
+  - {"name": "C278", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw"}
+  - {"name": "C279", "type": "vless", "server": "2001:db8::1", "port": 443, "uuid": "11111111-1111-4111-8111-111111111111", "servername": {"early-data-header-name": "ws", "version": 1, "enable": 3}, "username": "a.com", "reuse": "grpc", "plugin-opts": 2, "grpc-opts": "none", "headers": "xtls-rprx-vision"}
+  - {"name": "C280", "type": "hysteria2", "server": "1.2.3.4", "port": 1080, "password": "pw", "reuse": "xtls-rprx-vision", "tls": "chrome"}
+  - {"name": "C281", "type": "ssh", "server": "1.2.3.4", "port": 443, "version": "chrome", "disable-sni": "chrome", "dialer-proxy": "salamander", "udp": "http", "ech-opts": "none", "up": "v4-only", "udp-relay-mode": {"query-server-name": {"tls": "bbr"}, "enable": {"grpc-service-name": "gecko", "path": "1080", "down": "h2"}}}
+  - {"name": "C282", "type": "hysteria2", "server": "2001:db8::1", "port": "8443", "password": "pw", "ip-version": "none", "tfo": "xhttp", "headers": true}
+  - {"name": "C283", "type": "ssh", "server": "c.example.com", "port": 1080, "smux": [], "udp": null, "servername": "ws"}
+  - {"name": "C284", "type": "snell", "server": "2001:db8::1", "port": 1080, "obfs-password": null, "smux": {"password": "/p?ed=2048", "headers": {"grpc-service-name": "xtls-rprx-vision", "down": "/p?ed=2048"}}, "up": "", "udp": ["auto", 0], "plugin": 0, "dialer-proxy": "ipv4-prefer", "ws-opts": ["auto"], "disable-sni": "h2"}
+  - {"name": "C285", "type": "hysteria", "server": "c.example.com", "port": "8443", "skip-cert-verify": {"down": "/p?ed=2048", "query-server-name": "", "config": "chrome"}, "encryption": "native", "auth-str": "", "udp": 0, "servername": 5}
+  - {"name": "C286", "type": "anytls", "server": "c.example.com", "port": 443, "password": "pw", "headers": false}
+  - {"name": "C287", "type": "socks5", "server": "1.2.3.4", "port": "8443", "udp-over-tcp": "a.com", "tfo": 443, "up": {"headers": "a.com"}, "headers": {"public-key": "/p", "path": false}}
+  - {"name": "C288", "type": "ssh", "server": "c.example.com", "port": 1080, "dialer-proxy": "gecko", "plugin-opts": "v4-only"}
+  - {"name": "C289", "type": "trojan", "server": "1.2.3.4", "port": "8443", "password": "pw", "up": ["chrome"]}
+  - {"name": "C290", "type": "hysteria2", "server": "2001:db8::1", "port": 443, "password": "pw", "headers": null}
+  - {"name": "C291", "type": "http", "server": "1.2.3.4", "port": 443}
+  - {"name": "C292", "type": "trojan", "server": "c.example.com", "port": 1080, "password": "/p?ed=2048", "ip-version": false, "tfo": {"headers": "/p", "max-early-data": "grpc"}, "client-fingerprint": {}, "ports": "h2", "global-padding": 0, "obfs-password": "tcp"}
+  - {"name": "C293", "type": "vmess", "server": "2001:db8::1", "port": "8443", "uuid": "11111111-1111-4111-8111-111111111111"}
+  - {"name": "C294", "type": "snell", "server": "c.example.com", "port": 1080, "disable-sni": [""]}
+  - {"name": "C295", "type": "hysteria2", "server": "2001:db8::1", "port": 443, "password": "pw", "global-padding": "native", "congestion-controller": "bbr", "username": "salamander", "auth-str": ["ws", "xhttp"], "up": 0}
+  - {"name": "C296", "type": "ssh", "server": "c.example.com", "port": 1080, "token": 3, "smux": "a.com", "grpc-opts": null, "encryption": "v4-only", "tfo": "", "obfs-password": null, "hop-interval": "/p?ed=2048"}
+  - {"name": "C297", "type": "socks5", "server": "2001:db8::1", "port": 443, "username": 0, "servername": "auto", "network": "gecko"}
+  - {"name": "C298", "type": "socks5", "server": "c.example.com", "port": 1080, "tls": "v4-only", "disable-sni": false, "alpn": "http", "reuse": "http", "headers": "gecko", "down": "10-20", "hop-interval": {"Host": "h2"}}
+  - {"name": "C299", "type": "http", "server": "2001:db8::1", "port": "8443", "headers": "10-20", "token": [false]}

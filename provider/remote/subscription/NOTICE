@@ -1,0 +1,20 @@
+This directory contains a Go port of parts of Sub-Store
+(https://github.com/sub-store-org/Sub-Store):
+
+  backend/src/core/proxy-utils/preprocessors/index.js
+  backend/src/core/proxy-utils/parsers/index.js
+  backend/src/core/proxy-utils/parsers/peggy/trojan-uri.js
+  backend/src/core/proxy-utils/index.js
+  backend/src/core/proxy-utils/producers/clashmeta.js
+  backend/src/core/proxy-utils/producers/sing-box.js
+  backend/src/core/proxy-utils/producers/utils.js
+  backend/src/core/proxy-utils/transport-path.js
+  backend/src/core/proxy-utils/vmess-security.js
+  backend/src/core/proxy-utils/ech-utils.js
+  backend/src/utils/index.js
+  backend/src/utils/yaml.js
+  backend/src/utils/rs.js
+
+Sub-Store is licensed under the GNU Affero General Public License, version 3.
+The ported code in this directory is licensed under the same terms; the full
+text is available at https://www.gnu.org/licenses/agpl-3.0.html.

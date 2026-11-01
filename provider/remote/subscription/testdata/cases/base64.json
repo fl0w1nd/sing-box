@@ -1,0 +1,234 @@
+{
+  "outbounds": [
+    {
+      "tag": "SS SIP002",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 8388,
+      "method": "aes-256-gcm",
+      "password": "pass"
+    },
+    {
+      "tag": "SS plain userinfo",
+      "type": "shadowsocks",
+      "server": "example.com",
+      "server_port": 443,
+      "method": "aes-128-gcm",
+      "password": "p@ss"
+    },
+    {
+      "tag": "SS legacy",
+      "type": "shadowsocks",
+      "server": "legacy.example.com",
+      "server_port": 8000,
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw"
+    },
+    {
+      "tag": "SS IPv6",
+      "type": "shadowsocks",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "a2V5a2V5a2V5a2V5a2V5a2V5"
+    },
+    {
+      "tag": "VMess ws tls",
+      "type": "vmess",
+      "server": "vm.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "tls": {
+        "enabled": true,
+        "server_name": "sni.example.com",
+        "insecure": false,
+        "alpn": [
+          "h2",
+          "http/1.1"
+        ],
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "headers": {
+          "Host": "cdn.example.com"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol",
+        "max_early_data": 2048,
+        "path": "/ws"
+      }
+    },
+    {
+      "tag": "VMess tcp",
+      "type": "vmess",
+      "server": "1.1.1.1",
+      "server_port": 10086,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "aes-128-gcm",
+      "alter_id": 2
+    },
+    {
+      "tag": "VMess grpc",
+      "type": "vmess",
+      "server": "grpc.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "tls": {
+        "enabled": true,
+        "server_name": "grpc.example.com",
+        "insecure": false
+      },
+      "transport": {
+        "type": "grpc",
+        "service_name": "svc"
+      }
+    },
+    {
+      "tag": "VLESS Reality Vision",
+      "type": "vless",
+      "server": "reality.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "PUBKEY_abc",
+          "short_id": "6ba85179e30d4fc2"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "VLESS Reality gRPC",
+      "type": "vless",
+      "server": "grpc.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "g.example.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "PUB",
+          "short_id": "01"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "grpc",
+        "service_name": "grpcsvc"
+      }
+    },
+    {
+      "tag": "VLESS ws tls",
+      "type": "vless",
+      "server": "ws.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "ws.example.com",
+        "insecure": true,
+        "alpn": [
+          "h2",
+          "http/1.1"
+        ],
+        "utls": {
+          "enabled": true,
+          "fingerprint": "safari"
+        }
+      },
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "ws",
+        "headers": {
+          "Host": "cdn.example.com"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol",
+        "max_early_data": 2560,
+        "path": "/vl"
+      }
+    },
+    {
+      "tag": "Trojan basic",
+      "type": "trojan",
+      "server": "trojan.example.com",
+      "server_port": 443,
+      "password": "p@ss",
+      "tls": {
+        "enabled": true,
+        "server_name": "t.example.com",
+        "insecure": true,
+        "alpn": [
+          "h2"
+        ]
+      }
+    },
+    {
+      "tag": "Trojan default port",
+      "type": "trojan",
+      "server": "trojan.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "x.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "Hy2 obfs",
+      "type": "hysteria2",
+      "server": "hy2.example.com",
+      "server_port": 443,
+      "password": "pass",
+      "obfs": {
+        "type": "salamander",
+        "password": "ob"
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "hy2.example.com",
+        "insecure": true
+      },
+      "up_mbps": 100,
+      "down_mbps": 500
+    },
+    {
+      "tag": "Hy2 port range",
+      "type": "hysteria2",
+      "server": "hy2.example.com",
+      "server_port": 20000,
+      "password": "p:w",
+      "tls": {
+        "enabled": true,
+        "server_name": "a.com",
+        "insecure": false
+      },
+      "hop_interval": "30s",
+      "server_ports": [
+        "20000:30000"
+      ]
+    }
+  ]
+}

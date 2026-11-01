@@ -1,6 +1,6 @@
 # Outbound Provider
 
-Outbound providers load proxy outbounds from a remote sing-box JSON document and update referenced Selector and URLTest groups at runtime.
+Outbound providers load proxy outbounds from a remote subscription and update referenced Selector and URLTest groups at runtime.
 
 ### Complete example
 
@@ -30,7 +30,7 @@ Outbound providers load proxy outbounds from a remote sing-box JSON document and
       "type": "remote",
       // Unique provider tag; imported nodes use airport/original-tag.
       "tag": "airport",
-      // Remote URL returning sing-box JSON.
+      // Remote subscription URL: sing-box JSON, share links or Clash YAML.
       "url": "https://example.com/subscription.json",
       // Required tag of a shared top-level HTTP client.
       "http_client": "provider-download-client",
@@ -139,6 +139,16 @@ Static outbounds start before HTTP clients, and HTTP clients start before provid
 | `include` / `exclude` | Regular-expression filters for original node tags; `exclude` takes precedence. |
 
 The subscription document uses sing-box JSON. The provider imports its top-level `outbounds` array and ignores other top-level fields. Empty tags use the array index; duplicate tags receive ` #2`, ` #3`, and subsequent suffixes.
+
+A subscription that is not a sing-box JSON document with an `outbounds` array is converted first, with the same result as the [Sub-Store](https://github.com/sub-store-org/Sub-Store) sing-box target:
+
+* Base64-encoded or plain share links: `ss`, `vmess`, `vless`, `trojan`, `hysteria`, `hysteria2`/`hy2`, `tuic`, `anytls`, `socks`/`socks5` and `http`/`https`.
+* Clash and Mihomo YAML; only `proxies` is read.
+* SSD.
+
+Fields that sing-box does not support, such as `disable_reuse` that Sub-Store produces for AnyTLS, are left out. Converted nodes use their names as tags. Nodes that sing-box cannot use, such as ShadowsocksR or VLESS with XHTTP, are skipped; WireGuard and Tailscale nodes are skipped as well, since sing-box configures them as endpoints. Surge, Loon and Quantumult X formats are not supported. Many subscription services choose the format by `User-Agent`; a Clash or Mihomo `user_agent` often returns more complete node parameters than a share link list.
+
+`include` and `exclude` do not drop a node that a loaded node uses as its `detour`, such as the ShadowTLS node `<name>_shadowtls` that a converted Shadowsocks node with the shadow-tls plugin dials through.
 
 An imported outbound can use another imported node as its `detour`. The provider resolves an original node tag such as `entry` to its full tag (`airport/entry` by default); an explicit full tag also works. Other detour tags keep their original value. Chained nodes start in dependency order, and an upstream node change rebuilds its dependents during a subscription refresh.
 

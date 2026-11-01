@@ -1,6 +1,7 @@
 package remote
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	stdJSON "encoding/json"
@@ -19,6 +20,7 @@ import (
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/log"
 	"github.com/sagernet/sing-box/option"
+	"github.com/sagernet/sing-box/provider/remote/subscription"
 	E "github.com/sagernet/sing/common/exceptions"
 	F "github.com/sagernet/sing/common/format"
 	"github.com/sagernet/sing/common/json"
@@ -371,41 +373,104 @@ type document struct {
 	err error
 }
 
-func (p *Provider) parse(content []byte) (*document, error) {
+// decodeOutbounds reads the outbounds of a sing-box document. Other content,
+// such as share links or a Clash configuration, is converted first.
+func decodeOutbounds(content []byte) ([]stdJSON.RawMessage, error) {
 	var raw struct {
 		Outbounds []stdJSON.RawMessage `json:"outbounds"`
 	}
 	err := stdJSON.Unmarshal(content, &raw)
-	if err != nil {
+	if err == nil && raw.Outbounds != nil {
+		return raw.Outbounds, nil
+	}
+	converted, convertErr := subscription.Convert(content)
+	if convertErr == nil {
+		var convertedDocument struct {
+			Outbounds []stdJSON.RawMessage `json:"outbounds"`
+		}
+		convertErr = stdJSON.Unmarshal(converted, &convertedDocument)
+		if convertErr == nil && len(convertedDocument.Outbounds) > 0 {
+			return convertedDocument.Outbounds, nil
+		}
+	}
+	if err != nil && bytes.HasPrefix(bytes.TrimSpace(content), []byte("{")) {
+		// Most likely a broken sing-box document.
 		return nil, E.Cause(err, "decode provider document")
+	}
+	if convertErr != nil {
+		return nil, E.Cause(convertErr, "convert provider subscription")
+	}
+	return raw.Outbounds, nil
+}
+
+func (p *Provider) parse(content []byte) (*document, error) {
+	outbounds, err := decodeOutbounds(content)
+	if err != nil {
+		return nil, err
 	}
 	tagPrefix := p.tag + "/"
 	if p.options.TagPrefix != nil {
 		tagPrefix = *p.options.TagPrefix
 	}
+	type metadata struct {
+		Type   string `json:"type"`
+		Tag    string `json:"tag"`
+		Detour string `json:"detour"`
+	}
+	type item struct {
+		raw stdJSON.RawMessage
+		metadata
+		tag string
+	}
+	items := make([]item, 0, len(outbounds))
+	for index, rawOutbound := range outbounds {
+		var outboundMetadata metadata
+		if stdJSON.Unmarshal(rawOutbound, &outboundMetadata) != nil {
+			continue
+		}
+		tag := strings.TrimSpace(outboundMetadata.Tag)
+		if tag == "" {
+			tag = strconv.Itoa(index)
+		}
+		if skippedOutboundType(outboundMetadata.Type) {
+			continue
+		}
+		items = append(items, item{rawOutbound, outboundMetadata, tag})
+	}
+	// Nodes that include and exclude drop are still loaded when a loaded node
+	// detours through them, such as the ShadowTLS node of a Shadowsocks node.
+	kept := make(map[string]bool, len(items))
+	var keep func(tag string)
+	keep = func(tag string) {
+		if kept[tag] {
+			return
+		}
+		kept[tag] = true
+		for _, candidate := range items {
+			if candidate.tag == tag && candidate.Detour != "" {
+				keep(candidate.Detour)
+			}
+		}
+	}
+	for _, candidate := range items {
+		if !p.filtered(candidate.tag) {
+			keep(candidate.tag)
+		}
+	}
 	type entry struct {
 		raw stdJSON.RawMessage
 		tag string
 	}
-	entries := make([]entry, 0, len(raw.Outbounds))
+	entries := make([]entry, 0, len(items))
 	// A detour names the first node with that tag; later ones are renamed "tag #n".
 	localTags := make(map[string]string)
 	counts := make(map[string]int)
-	for index, rawOutbound := range raw.Outbounds {
-		var metadata struct {
-			Type string `json:"type"`
-			Tag  string `json:"tag"`
-		}
-		if stdJSON.Unmarshal(rawOutbound, &metadata) != nil {
+	for _, candidate := range items {
+		tag := candidate.tag
+		if !kept[tag] {
 			continue
 		}
-		tag := strings.TrimSpace(metadata.Tag)
-		if tag == "" {
-			tag = strconv.Itoa(index)
-		}
-		if p.filtered(tag) || skippedOutboundType(metadata.Type) {
-			continue
-		}
+		rawOutbound := candidate.raw
 		counts[tag]++
 		fullTag := tagPrefix + tag
 		if counts[tag] > 1 {

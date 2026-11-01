@@ -1,0 +1,2984 @@
+{
+  "outbounds": [
+    {
+      "tag": "C0",
+      "type": "http",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C1",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C3",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "detour": "h2"
+    },
+    {
+      "tag": "C4",
+      "type": "shadowsocks",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "method": "none",
+      "password": "pw",
+      "plugin_opts": ""
+    },
+    {
+      "tag": "C5",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "username": "grpc"
+    },
+    {
+      "tag": "C6",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C7",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C9",
+      "type": "naive",
+      "server": "c.example.com",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C10",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 1080
+    },
+    {
+      "tag": "C11",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "tag": "C12",
+      "type": "vless",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C13",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C14",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C15",
+      "type": "anytls",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "h2",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C16",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "detour": "gecko"
+    },
+    {
+      "tag": "C17",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "detour": "salamander"
+    },
+    {
+      "tag": "C18",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C19",
+      "type": "tuic",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": true,
+        "disable_sni": true,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "udp_relay_mode": [],
+      "heartbeat": "[object Object]ms",
+      "network": "tcp"
+    },
+    {
+      "tag": "C21",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C23",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C24",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw",
+      "plugin_opts": ""
+    },
+    {
+      "tag": "C25",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C26",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C27",
+      "type": "socks",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "version": "5"
+    },
+    {
+      "tag": "C28",
+      "type": "tuic",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C29",
+      "type": "vless",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C30",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C31",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C32",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C33",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C35",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "udp_fragment": true,
+      "up_mbps": null,
+      "down_mbps": null,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C36",
+      "type": "anytls",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C37",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C38",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "udp_fragment": true,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C39",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C40",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C41",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C42",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "version": "5"
+    },
+    {
+      "tag": "C43",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C44",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C45",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "headers": {
+        "0": "n",
+        "1": "a",
+        "2": "t",
+        "3": "i",
+        "4": "v",
+        "5": "e"
+      }
+    },
+    {
+      "tag": "C46",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C47",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C48",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "version": "5"
+    },
+    {
+      "tag": "C49",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "obfs": {
+        "type": "salamander",
+        "password": "xhttp"
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": true,
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C50",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C51",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": 2
+    },
+    {
+      "tag": "C52",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C53",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "disable_sni": true
+      }
+    },
+    {
+      "tag": "C54",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C55",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C56",
+      "type": "trojan",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C57",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C58",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C59",
+      "type": "anytls",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "prefer-v6",
+        "insecure": false,
+        "alpn": [
+          1,
+          "10-20"
+        ]
+      }
+    },
+    {
+      "tag": "C60",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C62",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "disable_sni": true
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C63",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C64",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "alpn": [
+          "10-20",
+          "grpc"
+        ]
+      }
+    },
+    {
+      "tag": "C65",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C66",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C68",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C69",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "30",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C70",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C71",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C73",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C75",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "alpn": []
+      }
+    },
+    {
+      "tag": "C76",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C77",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "chrome",
+        "insecure": false
+      },
+      "udp_over_tcp": {
+        "enabled": true,
+        "version": 1
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C78",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "pw"
+    },
+    {
+      "tag": "C79",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "heartbeat": "5ms"
+    },
+    {
+      "tag": "C80",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C81",
+      "type": "trojan",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C82",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C83",
+      "type": "naive",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C84",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "gecko",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ],
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true
+        }
+      },
+      "udp_relay_mode": {}
+    },
+    {
+      "tag": "C85",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "h2"
+    },
+    {
+      "tag": "C86",
+      "type": "shadowsocks",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "method": "aes-128-gcm",
+      "password": "pw",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=websocket;obfs-host=o.com;password=x;version=0;tls=true;mux=true"
+    },
+    {
+      "tag": "C88",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C89",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C90",
+      "type": "shadowsocks",
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw",
+      "detour": "C90_shadowtls"
+    },
+    {
+      "tag": "C90_shadowtls",
+      "type": "shadowtls",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "version": 0,
+      "password": "x",
+      "tls": {
+        "enabled": true,
+        "server_name": "o.com",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "C91",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C92",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "auth_str": "gecko",
+      "up_mbps": null,
+      "down_mbps": null,
+      "detour": "native"
+    },
+    {
+      "tag": "C93",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": null,
+      "tls": {
+        "enabled": true,
+        "server_name": {
+          "version": "xtls-rprx-vision",
+          "early-data-header-name": [
+            "h2",
+            "ipv4-prefer"
+          ]
+        },
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C94",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C95",
+      "type": "anytls",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "disable_reuse": true
+    },
+    {
+      "tag": "C96",
+      "type": "shadowsocks",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw"
+    },
+    {
+      "tag": "C97",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": {},
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C98",
+      "type": "trojan",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C99",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C100",
+      "type": "socks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "version": "5"
+    },
+    {
+      "tag": "C101",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "username": 1
+    },
+    {
+      "tag": "C102",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C103",
+      "type": "vmess",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C104",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C105",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "none",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C106",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C107",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C108",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw",
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C109",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "method": "aes-128-gcm",
+      "password": "pw"
+    },
+    {
+      "tag": "C110",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "headers": {
+        "0": "x",
+        "1": "t",
+        "2": "l",
+        "3": "s",
+        "4": "-",
+        "5": "r",
+        "6": "p",
+        "7": "r",
+        "8": "x",
+        "9": "-",
+        "10": "v",
+        "11": "i",
+        "12": "s",
+        "13": "i",
+        "14": "o",
+        "15": "n"
+      }
+    },
+    {
+      "tag": "C111",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C112",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "grpc",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C113",
+      "type": "vmess",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C114",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "pw"
+    },
+    {
+      "tag": "C115",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C116",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": 443,
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C117",
+      "type": "naive",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C118",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C119",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C120",
+      "type": "trojan",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C121",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 1080
+    },
+    {
+      "tag": "C122",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C123",
+      "type": "http",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C124",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "detour": "h2"
+    },
+    {
+      "tag": "C126",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "method": "none",
+      "password": "pw"
+    },
+    {
+      "tag": "C127",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C128",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "detour": 3
+    },
+    {
+      "tag": "C129",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C130",
+      "type": "socks",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "version": "5"
+    },
+    {
+      "tag": "C131",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C132",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C133",
+      "type": "hysteria",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C134",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C135",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C136",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C137",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "detour": 5
+    },
+    {
+      "tag": "C138",
+      "type": "vless",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C139",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C140",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C141",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "obfs": {
+        "type": "salamander",
+        "password": [
+          "v4-only",
+          5
+        ]
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "down_mbps": null
+    },
+    {
+      "tag": "C142",
+      "type": "trojan",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C143",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "bbr",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C144",
+      "type": "tuic",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false,
+        "disable_sni": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C145",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "tag": "C146",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C147",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C148",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": true
+      }
+    },
+    {
+      "tag": "C149",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "version": "5"
+    },
+    {
+      "tag": "C150",
+      "type": "http",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C151",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "salamander",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C152",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "detour": "gecko"
+    },
+    {
+      "tag": "C153",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C155",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": 443
+      }
+    },
+    {
+      "tag": "C156",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C158",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "network": "tcp"
+    },
+    {
+      "tag": "C159",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "auth_str": "bbr",
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C160",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C161",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": {
+          "mux": []
+        },
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "heartbeat": "grpcms"
+    },
+    {
+      "tag": "C162",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C163",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "disable_sni": true
+      }
+    },
+    {
+      "tag": "C164",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C165",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C166",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C167",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C168",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C169",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "disable_sni": true
+      }
+    },
+    {
+      "tag": "C170",
+      "type": "hysteria",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C172",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C173",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 1080
+    },
+    {
+      "tag": "C174",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "pw",
+      "detour": "xhttp"
+    },
+    {
+      "tag": "C175",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C176",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "password": {},
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C177",
+      "type": "socks",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "version": "5"
+    },
+    {
+      "tag": "C178",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C179",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C180",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "method": "none",
+      "password": "pw",
+      "plugin": "obfs-local",
+      "plugin_opts": "obfs=http;obfs-host=o.com;password=x;version=3;tls=true;mux=true"
+    },
+    {
+      "tag": "C181",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C182",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C183",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "user": "http",
+      "detour": "h2"
+    },
+    {
+      "tag": "C184",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 8443
+    },
+    {
+      "tag": "C186",
+      "type": "snell",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C187",
+      "type": "tuic",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C188",
+      "type": "http",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C189",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "version": "5"
+    },
+    {
+      "tag": "C190",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "udp_over_tcp": {
+        "enabled": true,
+        "version": 1
+      }
+    },
+    {
+      "tag": "C191",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "ipv4-prefer",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C192",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C193",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 8443
+    },
+    {
+      "tag": "C194",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C195",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C196",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C197",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C198",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 8443
+    },
+    {
+      "tag": "C199",
+      "type": "shadowsocks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "method": "none",
+      "password": "http"
+    },
+    {
+      "tag": "C200",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C201",
+      "type": "vmess",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C202",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1"
+      }
+    },
+    {
+      "tag": "C203",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C204",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "method": "chacha20-ietf-poly1305",
+      "password": "10-20"
+    },
+    {
+      "tag": "C205",
+      "type": "socks",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "version": "5",
+      "detour": "30"
+    },
+    {
+      "tag": "C206",
+      "type": "trojan",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C208",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "global_padding": true,
+      "detour": {}
+    },
+    {
+      "tag": "C209",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true
+        }
+      },
+      "server_ports": [
+        "[object Object]:[object Object]"
+      ],
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C210",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "version": "5",
+      "username": "/p"
+    },
+    {
+      "tag": "C211",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "global_padding": true
+    },
+    {
+      "tag": "C212",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "bbr",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C213",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0,
+      "global_padding": true
+    },
+    {
+      "tag": "C214",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C215",
+      "type": "trojan",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "tcp",
+        "insecure": false,
+        "disable_sni": true,
+        "alpn": [
+          "salamander"
+        ]
+      }
+    },
+    {
+      "tag": "C216",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 8443
+    },
+    {
+      "tag": "C217",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C219",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": null
+    },
+    {
+      "tag": "C220",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "reuse": true,
+      "detour": {
+        "path": "h2",
+        "enabled": "auto"
+      }
+    },
+    {
+      "tag": "C221",
+      "type": "vless",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C222",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": null
+    },
+    {
+      "tag": "C223",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C224",
+      "type": "hysteria",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C225",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 8443
+    },
+    {
+      "tag": "C226",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "alpn": [
+          "none"
+        ]
+      },
+      "server_ports": [
+        "443:443"
+      ],
+      "up_mbps": null,
+      "detour": "/p?ed=2048"
+    },
+    {
+      "tag": "C227",
+      "type": "tuic",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "udp_relay_mode": [
+        "h2",
+        true
+      ]
+    },
+    {
+      "tag": "C228",
+      "type": "tuic",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": true,
+        "disable_sni": true,
+        "alpn": [
+          "h3"
+        ]
+      }
+    },
+    {
+      "tag": "C229",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C230",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": null
+    },
+    {
+      "tag": "C231",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C232",
+      "type": "anytls",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": [
+          [
+            1,
+            "xhttp"
+          ]
+        ],
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C233",
+      "type": "shadowsocks",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "method": "chacha20-ietf-poly1305",
+      "password": "pw"
+    },
+    {
+      "tag": "C234",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": true
+      },
+      "server_ports": [
+        "xtls:rprx:vision"
+      ],
+      "up_mbps": null
+    },
+    {
+      "tag": "C235",
+      "type": "tuic",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false,
+        "disable_sni": true,
+        "alpn": [
+          "h3"
+        ]
+      },
+      "zero_rtt_handshake": true
+    },
+    {
+      "tag": "C236",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C237",
+      "type": "naive",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "password": {
+        "enable": "grpc",
+        "version": "v4-only"
+      },
+      "udp_over_tcp": {
+        "enabled": true,
+        "version": 1
+      }
+    },
+    {
+      "tag": "C238",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C239",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C240",
+      "type": "anytls",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C241",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "method": "none",
+      "password": "pw",
+      "tcp_fast_open": true,
+      "plugin_opts": ""
+    },
+    {
+      "tag": "C242",
+      "type": "http",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C243",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C244",
+      "type": "hysteria2",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "password": "chrome",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "up_mbps": 1080
+    },
+    {
+      "tag": "C245",
+      "type": "trojan",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C246",
+      "type": "socks",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "version": "5"
+    },
+    {
+      "tag": "C247",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "version": "5"
+    },
+    {
+      "tag": "C249",
+      "type": "naive",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "username": "/p?ed=2048",
+      "detour": "xtls-rprx-vision"
+    },
+    {
+      "tag": "C251",
+      "type": "hysteria",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true
+        }
+      },
+      "auth_str": "[object Object]",
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C252",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C254",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "detour": [
+        "10-20"
+      ]
+    },
+    {
+      "tag": "C255",
+      "type": "vmess",
+      "server": "c.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": null
+    },
+    {
+      "tag": "C256",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "psk": [
+        true
+      ]
+    },
+    {
+      "tag": "C257",
+      "type": "hysteria",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false,
+        "reality": {
+          "enabled": true
+        },
+        "utls": {
+          "enabled": true
+        }
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C258",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "headers": {
+        "0": "h",
+        "1": "t",
+        "2": "t",
+        "3": "p"
+      }
+    },
+    {
+      "tag": "C259",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 8443
+    },
+    {
+      "tag": "C260",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C261",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "a.com",
+        "insecure": false
+      },
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C262",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C263",
+      "type": "naive",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C264",
+      "type": "shadowsocks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "pw",
+      "plugin_opts": ""
+    },
+    {
+      "tag": "C265",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 8443
+    },
+    {
+      "tag": "C266",
+      "type": "vless",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C267",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 443
+    },
+    {
+      "tag": "C268",
+      "type": "naive",
+      "server": "c.example.com",
+      "server_port": 443,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C269",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "hop_interval": "3s",
+      "server_ports": [
+        "tcp:tcp"
+      ],
+      "up_mbps": null,
+      "down_mbps": null
+    },
+    {
+      "tag": "C270",
+      "type": "socks",
+      "server": "c.example.com",
+      "server_port": 443,
+      "version": "5",
+      "detour": 1
+    },
+    {
+      "tag": "C271",
+      "type": "hysteria",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      },
+      "udp_fragment": true,
+      "up_mbps": null,
+      "down_mbps": null,
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C272",
+      "type": "trojan",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C273",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C274",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 1080
+    },
+    {
+      "tag": "C275",
+      "type": "socks",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "version": "5",
+      "username": 5,
+      "detour": "ipv4-prefer"
+    },
+    {
+      "tag": "C276",
+      "type": "ssh",
+      "server": "2001:db8::1",
+      "server_port": 443
+    },
+    {
+      "tag": "C277",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C278",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C279",
+      "type": "vless",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "tag": "C280",
+      "type": "hysteria2",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C281",
+      "type": "ssh",
+      "server": "1.2.3.4",
+      "server_port": 443,
+      "detour": "salamander"
+    },
+    {
+      "tag": "C282",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C283",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C284",
+      "type": "snell",
+      "server": "2001:db8::1",
+      "server_port": 1080,
+      "detour": "ipv4-prefer"
+    },
+    {
+      "tag": "C285",
+      "type": "hysteria",
+      "server": "c.example.com",
+      "server_port": 8443,
+      "disable_mtu_discovery": false,
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": true
+      },
+      "up_mbps": null,
+      "down_mbps": null,
+      "network": "tcp"
+    },
+    {
+      "tag": "C286",
+      "type": "anytls",
+      "server": "c.example.com",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C287",
+      "type": "socks",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "version": "5",
+      "udp_over_tcp": {
+        "enabled": true,
+        "version": 1
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C288",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "detour": "gecko"
+    },
+    {
+      "tag": "C289",
+      "type": "trojan",
+      "server": "1.2.3.4",
+      "server_port": 8443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "1.2.3.4",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C290",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C291",
+      "type": "http",
+      "server": "1.2.3.4",
+      "server_port": 443
+    },
+    {
+      "tag": "C292",
+      "type": "trojan",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "password": "/p?ed=2048",
+      "tls": {
+        "enabled": true,
+        "server_name": "c.example.com",
+        "insecure": false
+      },
+      "tcp_fast_open": true
+    },
+    {
+      "tag": "C293",
+      "type": "vmess",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "security": "auto",
+      "alter_id": 0
+    },
+    {
+      "tag": "C294",
+      "type": "snell",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C295",
+      "type": "hysteria2",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "password": "pw",
+      "tls": {
+        "enabled": true,
+        "server_name": "2001:db8::1",
+        "insecure": false
+      }
+    },
+    {
+      "tag": "C296",
+      "type": "ssh",
+      "server": "c.example.com",
+      "server_port": 1080
+    },
+    {
+      "tag": "C297",
+      "type": "socks",
+      "server": "2001:db8::1",
+      "server_port": 443,
+      "version": "5"
+    },
+    {
+      "tag": "C298",
+      "type": "socks",
+      "server": "c.example.com",
+      "server_port": 1080,
+      "version": "5"
+    },
+    {
+      "tag": "C299",
+      "type": "http",
+      "server": "2001:db8::1",
+      "server_port": 8443,
+      "headers": {
+        "0": "1",
+        "1": "0",
+        "2": "-",
+        "3": "2",
+        "4": "0"
+      }
+    }
+  ]
+}

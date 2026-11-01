@@ -2,13 +2,16 @@ package provider_test
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
+	"slices"
 	"strconv"
+	"strings"
 	"sync"
 	"testing"
 
@@ -148,5 +151,65 @@ func TestProviderBoxLifecycleAndCacheRestore(t *testing.T) {
 	restored, loaded := secondBox.Provider().Get("source")
 	if !loaded || len(restored.Outbounds()) != 1 || restored.Outbounds()[0].Tag() != "source/node" {
 		t.Fatalf("provider cache was not restored: loaded=%v", loaded)
+	}
+}
+
+func TestProviderConvertsSubscription(t *testing.T) {
+	links := strings.Join([]string{
+		"ss://" + base64.RawURLEncoding.EncodeToString([]byte("aes-128-gcm:pass")) + "@ss.example.com:8388#SS",
+		"ss://" + base64.RawURLEncoding.EncodeToString([]byte("aes-128-gcm:pass")) + "@st.example.com:443/?plugin=shadow-tls%3Bhost%3Dwww.example.com%3Bpassword%3Dst%3Bversion%3D2#SS%20ShadowTLS",
+		"trojan://pass@trojan.example.com:443?sni=trojan.example.com#Trojan",
+		"ssr://unsupported",
+	}, "\n")
+	content := base64.StdEncoding.EncodeToString([]byte(links))
+	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		_, _ = writer.Write([]byte(content))
+	}))
+	defer server.Close()
+	config := fmt.Sprintf(`{
+  "log": {"disabled": true},
+  "http_clients": [{"tag":"provider-client"}],
+  "outbounds": [
+    {"type":"direct","tag":"direct"},
+    {"type":"selector","tag":"select","providers":["source"]}
+  ],
+  "providers": [{"type":"remote","tag":"source","url":%s,"http_client":"provider-client","exclude":"_shadowtls$|^Trojan$"}],
+  "route": {"final":"direct"},
+  "experimental": {"cache_file":{"enabled":true,"path":%s}}
+}`, strconv.Quote(server.URL), strconv.Quote(filepath.Join(t.TempDir(), "cache.db")))
+	ctx := box.ProviderContext(context.Background(), include.ProviderRegistry())
+	ctx = box.Context(ctx, include.InboundRegistry(), include.OutboundRegistry(), include.EndpointRegistry(), include.DNSTransportRegistry(), include.ServiceRegistry(), include.CertificateProviderRegistry())
+	options, err := json.UnmarshalExtendedContext[option.Options](ctx, []byte(config))
+	if err != nil {
+		t.Fatal(err)
+	}
+	instance, err := box.New(box.Options{Context: ctx, Options: options})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer instance.Close()
+	if err = instance.Start(); err != nil {
+		t.Fatal(err)
+	}
+	provider, _ := instance.Provider().Get("source")
+	var tags []string
+	for _, outbound := range provider.Outbounds() {
+		tags = append(tags, outbound.Type()+"/"+outbound.Tag())
+	}
+	// The ShadowTLS node is kept although it is excluded, since a kept node
+	// detours through it.
+	expected := []string{"shadowsocks/source/SS", "shadowsocks/source/SS ShadowTLS", "shadowtls/source/SS ShadowTLS_shadowtls"}
+	if !slices.Equal(tags, expected) {
+		t.Fatalf("unexpected provider outbounds: %v", tags)
+	}
+	if err = provider.LastError(); err != nil {
+		t.Fatal(err)
+	}
+	outbounds := provider.Outbounds()
+	if err = provider.Update(t.Context()); err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(outbounds, provider.Outbounds()) {
+		t.Fatal("an unchanged subscription replaced its outbounds")
 	}
 }

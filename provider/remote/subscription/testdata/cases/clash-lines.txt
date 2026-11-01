@@ -1,0 +1,2 @@
+{"name":"JSON line","type":"trojan","server":"jl.example.com","port":443,"password":"pw"}
+{name: YAML flow line, type: ss, server: yl.example.com, port: 8388, cipher: aes-128-gcm, password: pw}

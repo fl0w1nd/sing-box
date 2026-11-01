@@ -1,6 +1,6 @@
 # 出站提供者
 
-出站提供者从远程 sing-box JSON 文档加载代理出站，并在运行时更新引用它的 Selector 和 URLTest 策略组。
+出站提供者从远程订阅加载代理出站，并在运行时更新引用它的 Selector 和 URLTest 策略组。
 
 ### 完整配置示例
 
@@ -30,7 +30,7 @@
       "type": "remote",
       // Provider 唯一标签；导入节点使用 airport/原始标签。
       "tag": "airport",
-      // 返回 sing-box JSON 的远程订阅地址。
+      // 远程订阅地址：sing-box JSON、分享链接或 Clash YAML。
       "url": "https://example.com/subscription.json",
       // 必填的顶层共享 HTTP 客户端标签。
       "http_client": "provider-download-client",
@@ -139,6 +139,16 @@
 | `include` / `exclude` | 原始节点标签正则过滤；`exclude` 优先。 |
 
 订阅文档使用 sing-box JSON。Provider 导入顶层 `outbounds` 数组，并忽略其他顶层字段。空标签使用数组索引，重复标签追加 ` #2`、` #3`。
+
+不是带 `outbounds` 数组的 sing-box JSON 文档的订阅会先被转换，结果与 [Sub-Store](https://github.com/sub-store-org/Sub-Store) 的 sing-box 目标一致：
+
+* Base64 编码或明文的分享链接：`ss`、`vmess`、`vless`、`trojan`、`hysteria`、`hysteria2`/`hy2`、`tuic`、`anytls`、`socks`/`socks5` 和 `http`/`https`。
+* Clash 与 Mihomo YAML，只读取 `proxies`。
+* SSD。
+
+sing-box 不支持的字段会被省略，例如 Sub-Store 为 AnyTLS 生成的 `disable_reuse`。转换后的节点以节点名称作为标签。sing-box 无法使用的节点（如 ShadowsocksR、使用 XHTTP 的 VLESS）会被跳过；WireGuard 和 Tailscale 节点在 sing-box 中是端点，同样会被跳过。不支持 Surge、Loon 和 Quantumult X 格式。很多订阅服务按 `User-Agent` 决定返回格式，使用 Clash 或 Mihomo 的 `user_agent` 通常能得到比分享链接更完整的节点参数。
+
+`include` 和 `exclude` 不会过滤掉被已加载节点用作 `detour` 的节点，例如使用 shadow-tls 插件的 Shadowsocks 节点转换后所经由的 ShadowTLS 节点 `<名称>_shadowtls`。
 
 导入节点可用 `detour` 引用同一 Provider 的其他节点。原始标签 `entry` 会被解析为完整标签（默认 `airport/entry`），显式写完整标签也可使用；其他 `detour` 标签保持原值。链式节点按依赖顺序启动，上游节点变化时会在订阅刷新中重建依赖它的节点。
 

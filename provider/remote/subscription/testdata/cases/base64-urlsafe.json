@@ -1,0 +1,87 @@
+{
+  "outbounds": [
+    {
+      "tag": "VLESS Reality Vision",
+      "type": "vless",
+      "server": "reality.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "PUBKEY_abc",
+          "short_id": "6ba85179e30d4fc2"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "packet_encoding": "xudp",
+      "flow": "xtls-rprx-vision"
+    },
+    {
+      "tag": "VLESS Reality gRPC",
+      "type": "vless",
+      "server": "grpc.example.com",
+      "server_port": 443,
+      "uuid": "11111111-1111-4111-8111-111111111111",
+      "tls": {
+        "enabled": true,
+        "server_name": "g.example.com",
+        "insecure": false,
+        "reality": {
+          "enabled": true,
+          "public_key": "PUB",
+          "short_id": "01"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "grpc",
+        "service_name": "grpcsvc"
+      }
+    },
+    {
+      "tag": "Hy2 obfs",
+      "type": "hysteria2",
+      "server": "hy2.example.com",
+      "server_port": 443,
+      "password": "pass",
+      "obfs": {
+        "type": "salamander",
+        "password": "ob"
+      },
+      "tls": {
+        "enabled": true,
+        "server_name": "hy2.example.com",
+        "insecure": true
+      },
+      "up_mbps": 100,
+      "down_mbps": 500
+    },
+    {
+      "tag": "Hy2 port range",
+      "type": "hysteria2",
+      "server": "hy2.example.com",
+      "server_port": 20000,
+      "password": "p:w",
+      "tls": {
+        "enabled": true,
+        "server_name": "a.com",
+        "insecure": false
+      },
+      "hop_interval": "30s",
+      "server_ports": [
+        "20000:30000"
+      ]
+    }
+  ]
+}
