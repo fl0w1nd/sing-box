@@ -1,14 +1,72 @@
-# sing-box
+# sing-box Extended
 
-The universal proxy platform.
-
-[![Packaging status](https://repology.org/badge/vertical-allrepos/sing-box.svg)](https://repology.org/project/sing-box/versions)
+A fork of [sing-box](https://github.com/SagerNet/sing-box), the universal proxy platform, that follows upstream and adds the features below. Releases are tagged `v<upstream version>-extended.<N>`.
 
 ## Documentation
 
-https://sing-box.sagernet.org
+Upstream documentation: https://sing-box.sagernet.org
+
+## Extended features
+
+### Outbound providers
+
+Top-level `providers` load proxy outbounds from a remote subscription and keep them updated at runtime, without restarting the core. Subscriptions can be sing-box JSON, share links (plain or Base64), SSD or Clash/Mihomo YAML; other formats are converted like the [Sub-Store](https://github.com/sub-store-org/Sub-Store) sing-box target. Selector and URLTest groups take provider nodes with `providers` or `use_all_providers`, filtered by `include` and `exclude`.
+
+See [Outbound Provider](docs/configuration/provider/index.md) ([中文](docs/configuration/provider/index.zh.md)).
+
+### Unified delay
+
+```json
+{
+  "experimental": {
+    "unified_delay": {
+      "enabled": true
+    }
+  }
+}
+```
+
+URL tests, including URLTest groups and Clash API delay tests, send a second request over the established connection and report its time, like the Mihomo `unified-delay` option, so the result leaves out handshakes. If the second request fails, the first result is kept.
+
+### Sniff `override_destination`
+
+```json
+{
+  "action": "sniff",
+  "override_destination": true
+}
+```
+
+The `sniff` route action takes `override_destination` again, which upstream removed with the deprecated inbound sniff fields, so that a proxy resolves the domain on the remote side instead of connecting to the IP from the local DNS. Rules match as without it: domain rules see the sniffed domain and IP rules the original IP. Only when the connection is handed to the outbound is the destination replaced with the sniffed domain, unless the outbound is `direct` or an endpoint, which would resolve it locally again, or the destination was overridden by route options. Unlike upstream before, `direct` keeps the IP. Only a domain read from the connection itself (the TLS or QUIC server name, or the HTTP host) is used: a domain from the DNS reverse mapping is left to rule matching, since it is a guess when several domains share the IP.
+
+On a server, whose clients resolved the IP on their side, `direct` can resolve the sniffed domain again with the server's own DNS. Set `override_direct` as well, typically only for the proxy inbounds:
+
+```json
+{
+  "inbound": ["vless-in"],
+  "action": "sniff",
+  "override_destination": true,
+  "override_direct": true
+}
+```
+
+`override_direct` has no effect without `override_destination`. Endpoints always keep the IP.
+
+### 15s initial TCP keepalive
+
+The initial TCP keepalive interval is 15 seconds, as in the Go standard library and Mihomo, instead of 5 minutes upstream, so that carrier-grade NAT does not drop idle connections silently.
+
+### ExtendedService
+
+The daemon serves a separate gRPC service next to the upstream `StartedService`, which stays unchanged, for fork features in graphical clients. See [`daemon/extended_service.proto`](daemon/extended_service.proto):
+
+* `GetCapabilities`: the extended features the core supports, with versions.
+* `SubscribeOutboundProviders` and `UpdateOutboundProvider`: provider status, including subscription traffic and expiry, and manual updates.
+* `SetTailscaleForceRelay` and `SubscribeTailscaleForceRelayStatus`: make every Tailscale endpoint reach peers only through DERP relays, switched at runtime and kept in the cache file.
 
 ## License
+
+`provider/remote/subscription` is a port of Sub-Store and is licensed under the GNU Affero General Public License v3.0, see [its NOTICE](provider/remote/subscription/NOTICE).
 
 ```
 Copyright (C) 2022 by nekohasekai <contact-sagernet@sekai.icu>
