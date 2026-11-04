@@ -93,6 +93,10 @@ sing-box api dns-cache clear
 
 `dns-cache clear` clears the DNS cache like the Clash API `/cache/dns/flush`: the memory and optimistic cache, the cache stored in the cache file, the platform and system DNS caches, and the reverse mapping.
 
+### Dashboard
+
+The API service downloads the dashboard from the [fork's build](https://github.com/fl0w1nd/sing-box-dashboard) (`https://github.com/fl0w1nd/sing-box-dashboard/archive/refs/heads/gh-pages.zip`) by default instead of the upstream one. Set `dashboard.download_url` to use another build.
+
 ### ExtendedService
 
 The daemon serves a separate gRPC service next to the upstream `StartedService`, which stays unchanged, for fork features in graphical clients. See [`daemon/extended_service.proto`](daemon/extended_service.proto):
