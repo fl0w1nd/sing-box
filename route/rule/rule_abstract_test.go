@@ -150,3 +150,55 @@ func TestAbstractLogicalRule_And_WithRuleSetInvert(t *testing.T) {
 		})
 	}
 }
+
+func newDestinationRule() *DefaultRule {
+	item := &fakeRuleItem{matched: true}
+	return &DefaultRule{
+		abstractDefaultRule: abstractDefaultRule{
+			destinationAddressItems: []RuleItem{item},
+			allItems:                []RuleItem{item},
+		},
+	}
+}
+
+func TestTargetsDestination(t *testing.T) {
+	t.Parallel()
+	inverted := newDestinationRule()
+	inverted.invert = true
+	for _, testCase := range []struct {
+		name     string
+		rule     interface{ TargetsDestination() bool }
+		expected bool
+	}{
+		{name: "domain", rule: newDestinationRule(), expected: true},
+		{name: "rule-set", rule: newRuleSetOnlyRule(true, false), expected: true},
+		{name: "other condition", rule: newSingleItemRule(true), expected: false},
+		{name: "inverted", rule: inverted, expected: false},
+		{name: "and with domain", rule: &abstractLogicalRule{
+			mode:  C.LogicalTypeAnd,
+			rules: []adapter.HeadlessRule{newSingleItemRule(true), newDestinationRule()},
+		}, expected: true},
+		{name: "and without domain", rule: &abstractLogicalRule{
+			mode:  C.LogicalTypeAnd,
+			rules: []adapter.HeadlessRule{newSingleItemRule(true), newSingleItemRule(true)},
+		}, expected: false},
+		{name: "or with domain only", rule: &abstractLogicalRule{
+			mode:  C.LogicalTypeOr,
+			rules: []adapter.HeadlessRule{newDestinationRule(), newRuleSetOnlyRule(true, false)},
+		}, expected: true},
+		{name: "or with other condition", rule: &abstractLogicalRule{
+			mode:  C.LogicalTypeOr,
+			rules: []adapter.HeadlessRule{newDestinationRule(), newSingleItemRule(true)},
+		}, expected: false},
+		{name: "inverted logical", rule: &abstractLogicalRule{
+			mode:   C.LogicalTypeAnd,
+			rules:  []adapter.HeadlessRule{newDestinationRule()},
+			invert: true,
+		}, expected: false},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
+			require.Equal(t, testCase.expected, testCase.rule.TargetsDestination())
+		})
+	}
+}

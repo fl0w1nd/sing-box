@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/sagernet/sing-box/adapter"
+	"github.com/sagernet/sing-box/common/dnsquerylog"
 	"github.com/sagernet/sing-box/common/taskmonitor"
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing-box/experimental/deprecated"
@@ -294,6 +295,7 @@ func (r *Router) matchDNS(ctx context.Context, rules []adapter.DNSRule, allowFak
 		metadata.ResetRuleCache()
 		metadata.DestinationAddressMatchFromResponse = false
 		if currentRule.LegacyPreMatch(metadata) {
+			dnsquerylog.Rule(ctx, currentRuleIndex, currentRule)
 			if ruleDescription := currentRule.String(); ruleDescription != "" {
 				r.logger.DebugContext(ctx, "match[", currentRuleIndex, "] ", currentRule, " => ", currentRule.Action())
 			} else {
@@ -414,6 +416,7 @@ func (r *Router) resolveDNSRoute(server string, routeOptions R.RuleActionDNSRout
 }
 
 func (r *Router) logRuleMatch(ctx context.Context, ruleIndex int, currentRule adapter.DNSRule) {
+	dnsquerylog.Rule(ctx, ruleIndex, currentRule)
 	if ruleDescription := currentRule.String(); ruleDescription != "" {
 		r.logger.DebugContext(ctx, "match[", ruleIndex, "] ", currentRule, " => ", currentRule.Action())
 	} else {

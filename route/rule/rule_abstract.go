@@ -151,6 +151,14 @@ func (r *abstractDefaultRule) Action() adapter.RuleAction {
 	return r.action
 }
 
+// TargetsDestination reports whether the rule matches what is queried or
+// connected to, by domain, IP CIDR or a rule-set, rather than only by other
+// conditions such as the query type or the source. An inverted rule does
+// not, since it matches everything else.
+func (r *abstractDefaultRule) TargetsDestination() bool {
+	return !r.invert && (len(r.destinationAddressItems) > 0 || len(r.destinationIPCIDRItems) > 0 || r.ruleSetItem != nil)
+}
+
 func (r *abstractDefaultRule) String() string {
 	if !r.invert {
 		return strings.Join(F.MapToString(r.allItems), " ")
@@ -246,6 +254,26 @@ func (r *abstractLogicalRule) Match(metadata *adapter.InboundContext) bool {
 
 func (r *abstractLogicalRule) Action() adapter.RuleAction {
 	return r.action
+}
+
+// TargetsDestination reports whether every match of the rule depends on what
+// is queried or connected to: for and, when any rule does, for or, when all
+// rules do.
+func (r *abstractLogicalRule) TargetsDestination() bool {
+	if r.invert || len(r.rules) == 0 {
+		return false
+	}
+	for _, rule := range r.rules {
+		targeted, isTargeted := rule.(interface{ TargetsDestination() bool })
+		matches := isTargeted && targeted.TargetsDestination()
+		if r.mode == C.LogicalTypeAnd && matches {
+			return true
+		}
+		if r.mode == C.LogicalTypeOr && !matches {
+			return false
+		}
+	}
+	return r.mode == C.LogicalTypeOr
 }
 
 func (r *abstractLogicalRule) String() string {

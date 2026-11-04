@@ -12,6 +12,7 @@ import (
 
 	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/common/compatible"
+	"github.com/sagernet/sing-box/common/dnsquerylog"
 	"github.com/sagernet/sing-box/common/interrupt"
 	C "github.com/sagernet/sing-box/constant"
 	"github.com/sagernet/sing/common"
@@ -272,6 +273,7 @@ func (c *Client) beginExchange(ctx context.Context, transport adapter.DNSTranspo
 		if c.logger != nil {
 			c.logger.DebugContext(ctx, "strategy rejected")
 		}
+		dnsquerylog.MarkStrategyRejected(ctx)
 		return nil, FixedResponseStatus(message, dns.RcodeSuccess), exchangeDone, nil
 	}
 	isSimpleRequest := len(message.Question) == 1 &&
@@ -585,6 +587,7 @@ func (c *Client) questionCache(ctx context.Context, transport adapter.DNSTranspo
 		logRejectedResponse(c.logger, ctx, response)
 		return nil, ErrResponseRejectedCached
 	}
+	dnsquerylog.MarkCached(ctx)
 	if isStale {
 		logOptimisticResponse(c.logger, ctx, response)
 	}
@@ -693,7 +696,9 @@ func (c *Client) backgroundRefreshDNS(transport adapter.DNSTransport, key dnsCac
 		ctx := adapter.ContextWithDNSTransportTag(c.ctx, transport.Tag())
 		ctx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
+		ctx, finishQueryLog := dnsquerylog.BeginBackground(ctx, message)
 		response, err := c.exchangeToTransport(ctx, transport, message)
+		defer finishQueryLog(response, err)
 		if err != nil {
 			if c.logger != nil {
 				c.logger.DebugContext(ctx, "optimistic refresh failed for ", FqdnToDomain(key.Name), ": ", err)
@@ -708,6 +713,7 @@ func (c *Client) backgroundRefreshDNS(transport adapter.DNSTransport, key dnsCac
 				rejected = !responseChecker(response)
 			}
 			if rejected {
+				dnsquerylog.MarkRejected(ctx, response)
 				if c.logger != nil {
 					c.logger.DebugContext(ctx, "optimistic refresh rejected for ", FqdnToDomain(key.Name))
 				}
@@ -756,7 +762,9 @@ func stripDNSPadding(response *dns.Msg) {
 }
 
 func (c *Client) exchangeToTransport(ctx context.Context, transport adapter.DNSTransport, message *dns.Msg) (*dns.Msg, error) {
+	finishQueryLog := dnsquerylog.BeginUpstream(ctx, transport, message)
 	response, err := transport.Exchange(ctx, message)
+	finishQueryLog(response, err)
 	if err == nil {
 		stripDNSPadding(response)
 		return response, nil
@@ -769,7 +777,9 @@ func (c *Client) exchangeToTransport(ctx context.Context, transport adapter.DNST
 }
 
 func (c *Client) exchangeToTransportAsync(ctx context.Context, transport adapter.DNSTransport, message *dns.Msg, callback func(response *dns.Msg, err error)) {
+	finishQueryLog := dnsquerylog.BeginUpstream(ctx, transport, message)
 	transport.ExchangeAsync(ctx, message, func(response *dns.Msg, err error) {
+		finishQueryLog(response, err)
 		if err == nil {
 			stripDNSPadding(response)
 			callback(response, nil)
