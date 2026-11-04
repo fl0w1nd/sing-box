@@ -4,12 +4,14 @@ import (
 	"context"
 	"strings"
 
+	"github.com/sagernet/sing-box/common/dnsquerylog"
 	"github.com/sagernet/sing/common/logger"
 
 	"github.com/miekg/dns"
 )
 
 func logCachedResponse(logger logger.ContextLogger, ctx context.Context, response *dns.Msg, ttl int) {
+	dnsquerylog.MarkCached(ctx)
 	if logger == nil || len(response.Question) == 0 {
 		return
 	}
@@ -23,6 +25,7 @@ func logCachedResponse(logger logger.ContextLogger, ctx context.Context, respons
 }
 
 func logOptimisticResponse(logger logger.ContextLogger, ctx context.Context, response *dns.Msg) {
+	dnsquerylog.MarkOptimistic(ctx)
 	if logger == nil || len(response.Question) == 0 {
 		return
 	}
@@ -62,6 +65,7 @@ func logRefreshedResponse(logger logger.ContextLogger, ctx context.Context, resp
 }
 
 func logRejectedResponse(logger logger.ContextLogger, ctx context.Context, response *dns.Msg) {
+	dnsquerylog.MarkRejected(ctx, response)
 	if logger == nil || len(response.Question) == 0 {
 		return
 	}

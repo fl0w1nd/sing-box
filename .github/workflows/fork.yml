@@ -87,7 +87,7 @@ jobs:
           set -euo pipefail
           go test -count=1 -tags "$(cat release/DEFAULT_BUILD_TAGS_OTHERS)" -ldflags "$(cat release/LDFLAGS)" \
             ./provider/... ./protocol/group/ ./protocol/tailscale/ ./common/urltest/ ./route/ ./daemon/ \
-            ./adapter/... ./option/ ./experimental/cachefile/ ./experimental/clashapi/
+            ./adapter/... ./option/ ./experimental/cachefile/ ./experimental/clashapi/ ./common/dnsquerylog/ ./dns/
       - name: Check docs/schema.json
         run: |
           set -euo pipefail

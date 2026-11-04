@@ -14,6 +14,7 @@ import (
 	boxService "github.com/sagernet/sing-box/adapter/service"
 	"github.com/sagernet/sing-box/common/certificate"
 	"github.com/sagernet/sing-box/common/dialer"
+	"github.com/sagernet/sing-box/common/dnsquerylog"
 	"github.com/sagernet/sing-box/common/httpclient"
 	"github.com/sagernet/sing-box/common/netns"
 	"github.com/sagernet/sing-box/common/taskmonitor"
@@ -239,7 +240,13 @@ func New(options Options) (*Box, error) {
 	if err != nil {
 		return nil, E.Cause(err, "initialize DNS router")
 	}
-	service.MustRegister[adapter.DNSRouter](ctx, dnsRouter)
+	dnsQueryLog := dnsquerylog.New(ctx, logFactory.NewLogger("dns-query-log"), experimentalOptions.DNSQueryLog)
+	if dnsQueryLog != nil {
+		dnsQueryLog.SetServers(dnsOptions.Servers)
+		service.MustRegisterPtr(ctx, dnsQueryLog)
+		internalServices = append(internalServices, dnsQueryLog)
+	}
+	service.MustRegister[adapter.DNSRouter](ctx, dnsQueryLog.WrapRouter(dnsRouter))
 	service.MustRegister[adapter.DNSRuleSetUpdateValidator](ctx, dnsRouter)
 	connectionManager := route.NewConnectionManager(ctx, logFactory.NewLogger("connection"))
 	service.MustRegister[adapter.ConnectionManager](ctx, connectionManager)
