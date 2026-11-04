@@ -56,6 +56,43 @@ On a server, whose clients resolved the IP on their side, `direct` can resolve t
 
 The initial TCP keepalive interval is 15 seconds, as in the Go standard library and Mihomo, instead of 5 minutes upstream, so that carrier-grade NAT does not drop idle connections silently.
 
+### DNS query log
+
+```json
+{
+  "experimental": {
+    "dns_query_log": {
+      "enabled": true,
+      "path": "dns_query_log",
+      "memory_only": false,
+      "retention": "24h",
+      "max_size": "64MB",
+      "memory_size": 1000,
+      "flush_interval": "30s"
+    }
+  }
+}
+```
+
+Records every query of the DNS router, like the AdGuard Home query log, with what only the core knows: the client (inbound, source address, process), the matched DNS rules, each exchange with a DNS server (server tag, its configured address such as `https://dns.google/dns-query` and detour, or the addresses a `local` or `dhcp` server used, query type, time, answers, rejected by a later rule), cache and optimistic cache hits, FakeIP, and the final answer or error. Queries from `hijack-dns` and DNS inbounds are recorded as `exchange`, lookups for routing and dialing as `lookup`, and optimistic cache refreshes as `background`. Each entry has a status: `upstream`, `cached`, `optimistic`, `fakeip`, `rejected`, `predefined`, `strategy` (an empty answer for a query type the domain strategy excludes, such as AAAA with `ipv4_only`), `local` (any other answer the core made itself, such as for resolver discovery queries) or `error`.
+
+Entries are appended to segment files under `path` every `flush_interval`, or once `memory_size` entries are waiting, starting a new segment every hour or every eighth of `max_size`. Segments older than `retention` are removed, then the oldest segments while the total size exceeds `max_size`. With `memory_only`, only the latest `memory_size` entries are kept in memory and nothing is written. All fields except `enabled` are optional, with the defaults above.
+
+The query log is served by `ExtendedService` and by the `sing-box api dns-log` command:
+
+```bash
+sing-box api dns-log -n 50 --search example.com
+sing-box api dns-log -f --status upstream --server remote
+sing-box api dns-log status
+sing-box api dns-log stats --since 24h --bucket 1h
+sing-box api dns-log clear
+sing-box api dns-cache clear
+```
+
+`stats` summarizes the entries a filter selects: counts by status, by method and per time bucket, the top domains of the queries the core received and, apart, of the lookups and background queries it made itself, the queries answered by `reject` and `predefined` rules by kind, blocked domains, the rules that answered queries, clients (of the queries the core received, not of the lookups it made for connections) and query types, each DNS server's exchanges, failures, rejections and durations, and the average and 95th percentile duration of all queries and of those sent upstream. A query answered by a `reject` or `predefined` rule counts as blocked when the rule has a `domain`, `domain_suffix`, `domain_keyword`, `domain_regex`, `ip_cidr`, `ip_is_private`, `ip_accept_any` or `rule_set` condition, unless it is a `predefined` rule answering with records, which counts as rewritten, like hosts. A rule without any of these conditions, or an inverted one, is a policy rule, such as one answering every AAAA query: it applies to every domain, so its queries count as policy and not as blocked, and their domains are not ranked as blocked. `--method` selects `exchange`, `lookup` or `background` entries. It reads the matching entries on each call.
+
+`dns-cache clear` clears the DNS cache like the Clash API `/cache/dns/flush`: the memory and optimistic cache, the cache stored in the cache file, the platform and system DNS caches, and the reverse mapping.
+
 ### ExtendedService
 
 The daemon serves a separate gRPC service next to the upstream `StartedService`, which stays unchanged, for fork features in graphical clients. See [`daemon/extended_service.proto`](daemon/extended_service.proto):
@@ -63,6 +100,8 @@ The daemon serves a separate gRPC service next to the upstream `StartedService`,
 * `GetCapabilities`: the extended features the core supports, with versions.
 * `SubscribeOutboundProviders` and `UpdateOutboundProvider`: provider status, including subscription traffic and expiry, and manual updates.
 * `SetTailscaleForceRelay` and `SubscribeTailscaleForceRelayStatus`: make every Tailscale endpoint reach peers only through DERP relays, switched at runtime and kept in the cache file.
+* `GetDNSQueryLogStatus`, `QueryDNSQueryLog`, `SubscribeDNSQueryLog`, `GetDNSQueryLogStats` and `ClearDNSQueryLog`: the DNS query log, queried with filters and cursor pages, newest first, followed live, or summarized.
+* `ClearDNSCache`: clear the DNS cache, without the Clash API.
 
 ## License
 

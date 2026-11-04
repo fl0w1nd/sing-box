@@ -6,6 +6,7 @@ import (
 
 	"github.com/sagernet/sing-box"
 	"github.com/sagernet/sing-box/adapter"
+	"github.com/sagernet/sing-box/common/dnsquerylog"
 	"github.com/sagernet/sing-box/common/trafficcontrol"
 	"github.com/sagernet/sing-box/common/urltest"
 	C "github.com/sagernet/sing-box/constant"
@@ -37,6 +38,7 @@ type Instance struct {
 	outboundManager       adapter.OutboundManager
 	providerManager       adapter.ProviderManager
 	endpointManager       adapter.EndpointManager
+	dnsQueryLog           *dnsquerylog.Store
 	logFactory            log.Factory
 }
 
@@ -145,6 +147,7 @@ func (s *StartedService) newInstance(ctx context.Context, profileContent string,
 	i.outboundManager = service.FromContext[adapter.OutboundManager](ctx)
 	i.providerManager = service.FromContext[adapter.ProviderManager](ctx)
 	i.endpointManager = service.FromContext[adapter.EndpointManager](ctx)
+	i.dnsQueryLog = service.PtrFromContext[dnsquerylog.Store](ctx)
 	i.logFactory = boxInstance.LogFactory()
 	log.SetStdLogger(boxInstance.LogFactory().Logger())
 	return i, nil
@@ -162,6 +165,7 @@ func attachInstance(ctx context.Context) *Instance {
 		outboundManager:       service.FromContext[adapter.OutboundManager](ctx),
 		providerManager:       service.FromContext[adapter.ProviderManager](ctx),
 		endpointManager:       service.FromContext[adapter.EndpointManager](ctx),
+		dnsQueryLog:           service.PtrFromContext[dnsquerylog.Store](ctx),
 		logFactory:            service.FromContext[log.Factory](ctx),
 	}
 }

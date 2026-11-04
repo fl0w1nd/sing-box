@@ -10,6 +10,7 @@ type ExperimentalOptions struct {
 	ClashAPI     *ClashAPIOptions     `json:"clash_api,omitempty"`
 	V2RayAPI     *V2RayAPIOptions     `json:"v2ray_api,omitempty"`
 	UnifiedDelay *UnifiedDelayOptions `json:"unified_delay,omitempty"`
+	DNSQueryLog  *DNSQueryLogOptions  `json:"dns_query_log,omitempty"`
 	Debug        *DebugOptions        `json:"debug,omitempty"`
 }
 

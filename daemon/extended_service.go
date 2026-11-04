@@ -15,6 +15,7 @@ import (
 const (
 	OutboundProviderExtensionVersion    = 1
 	TailscaleForceRelayExtensionVersion = 1
+	DNSQueryLogExtensionVersion         = 1
 )
 
 type ExtendedService struct {
@@ -29,6 +30,8 @@ func NewExtendedService(started *StartedService) *ExtendedService {
 func (s *ExtendedService) GetCapabilities(context.Context, *emptypb.Empty) (*ExtensionCapabilities, error) {
 	capabilities := []*ExtensionCapability{
 		{Name: "outbound_provider", Version: OutboundProviderExtensionVersion},
+		{Name: "dns_query_log", Version: DNSQueryLogExtensionVersion},
+		{Name: "dns_cache", Version: DNSCacheExtensionVersion},
 	}
 	if withTailscale {
 		capabilities = append(capabilities, &ExtensionCapability{Name: "tailscale_force_relay", Version: TailscaleForceRelayExtensionVersion})
