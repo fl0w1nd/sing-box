@@ -8,6 +8,7 @@ import (
 	"github.com/sagernet/sing-box/adapter"
 	"github.com/sagernet/sing-box/common/urltest"
 	"github.com/sagernet/sing/common/x/list"
+	"github.com/sagernet/sing/service"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -32,7 +33,9 @@ func TestExtensionCapabilitiesKeepStartedAPIVersion(t *testing.T) {
 	for _, capability := range capabilities.Capabilities {
 		versions[capability.Name] = capability.Version
 	}
-	if versions["outbound_provider"] != 1 || withTailscale != (versions["tailscale_force_relay"] == TailscaleForceRelayExtensionVersion) {
+	if versions["outbound_provider"] != 1 || versions["dns_query_log"] != DNSQueryLogExtensionVersion ||
+		versions["dns_cache"] != DNSCacheExtensionVersion ||
+		withTailscale != (versions["tailscale_force_relay"] == TailscaleForceRelayExtensionVersion) {
 		t.Fatalf("unexpected extension capabilities: %+v", versions)
 	}
 }
@@ -109,5 +112,29 @@ func TestSubscribeOutboundProvidersPushesURLTestResults(t *testing.T) {
 		case <-deadline:
 			t.Fatal("URL test result was not pushed")
 		}
+	}
+}
+
+type clearCacheTestRouter struct {
+	adapter.DNSRouter
+	cleared int
+}
+
+func (r *clearCacheTestRouter) ClearCache() { r.cleared++ }
+
+func TestClearDNSCache(t *testing.T) {
+	ctx, cancel := context.WithCancel(t.Context())
+	defer cancel()
+	started := NewStartedService(ServiceOptions{Context: ctx})
+	router := &clearCacheTestRouter{}
+	instanceCtx := service.ContextWith[adapter.DNSRouter](service.ExtendContext(ctx), router)
+	started.instance = &Instance{ctx: instanceCtx}
+	started.serviceStatus = &ServiceStatus{Status: ServiceStatus_STARTED}
+	_, err := NewExtendedService(started).ClearDNSCache(ctx, &emptypb.Empty{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if router.cleared != 1 {
+		t.Fatalf("DNS cache cleared %d times", router.cleared)
 	}
 }
