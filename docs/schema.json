@@ -892,6 +892,41 @@
       },
       "additionalProperties": false
     },
+    "DNSQueryLogOptions": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "memory_only": {
+          "type": "boolean"
+        },
+        "retention": {
+          "$ref": "#/$defs/Duration"
+        },
+        "max_size": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "memory_size": {
+          "type": "integer"
+        },
+        "flush_interval": {
+          "$ref": "#/$defs/Duration"
+        }
+      },
+      "additionalProperties": false
+    },
     "DNSQueryType": {
       "anyOf": [
         {
@@ -5227,6 +5262,9 @@
         },
         "unified_delay": {
           "$ref": "#/$defs/UnifiedDelayOptions"
+        },
+        "dns_query_log": {
+          "$ref": "#/$defs/DNSQueryLogOptions"
         },
         "debug": {
           "$ref": "#/$defs/DebugOptions"
